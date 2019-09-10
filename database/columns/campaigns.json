@@ -1,0 +1,8 @@
+{
+  "id": "int64",
+  "name": "object",
+  "account_id": "int64",
+  "effective_status": "category",
+  "updated_time": "object",
+  "daily_budget": "float64"
+}

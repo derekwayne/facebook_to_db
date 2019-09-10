@@ -1,0 +1,10 @@
+2019-09-07 12:11:57,473 - root - ERROR - Failed to connect to MySQL
+Traceback (most recent call last):
+  File "optimized.py", line 54, in <module>
+    engine = mySQL_connect(credentials_path, port='3306', db='test_schema')
+NameError: name 'credentials_path' is not defined
+2019-09-07 12:12:53,672 - root - ERROR - Failed to connect to MySQL
+Traceback (most recent call last):
+  File "optimized.py", line 54, in <module>
+    engine = mySQL_connect(credentials, port='3306', db='test_schema')
+NameError: name 'credentials' is not defined

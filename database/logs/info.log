@@ -1,0 +1,174 @@
+2019-09-06 15:15:10,938 - __main__ - INFO - Successfully connected to mySQL database: {db}
+2019-09-06 15:17:40,466 - __main__ - INFO - Successfully connected to mySQL database: test_schema
+2019-09-06 15:32:55,689 - models - INFO - Successfully connected to mySQL database: test_schema
+2019-09-06 15:33:11,594 - __main__ - INFO - Facebook authentication was a success
+2019-09-06 15:35:31,888 - models - INFO - Successfully connected to mySQL database: test_schema
+2019-09-06 16:18:23,286 - __main__ - INFO - Successfully connected to mySQL database: test_schema
+2019-09-07 11:02:03,886 - models - INFO - Successfully connected to mySQL database: test_schema
+2019-09-07 11:05:17,663 - models - INFO - Successfully connected to mySQL database: test_schema
+2019-09-07 11:25:59,030 - models - INFO - Successfully connected to mySQL database: test_schema
+2019-09-07 11:26:51,055 - models - INFO - Successfully connected to mySQL database: test_schema
+2019-09-07 11:31:12,227 - models - INFO - Successfully connected to mySQL database: test_schema
+2019-09-07 11:31:46,096 - models - INFO - Successfully connected to mySQL database: test_schema
+2019-09-07 11:34:07,555 - models - INFO - Successfully connected to mySQL database: test_schema
+2019-09-07 11:34:09,267 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 11:34:43,969 - models - INFO - Successfully connected to mySQL database: test_schema
+2019-09-07 11:34:46,007 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 11:35:40,211 - models - INFO - Successfully connected to mySQL database: test_schema
+2019-09-07 11:35:42,282 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 12:11:57,473 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 12:11:57,473 - root - ERROR - Failed to connect to MySQL
+Traceback (most recent call last):
+  File "optimized.py", line 54, in <module>
+    engine = mySQL_connect(credentials_path, port='3306', db='test_schema')
+NameError: name 'credentials_path' is not defined
+2019-09-07 12:12:53,672 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 12:12:53,672 - root - ERROR - Failed to connect to MySQL
+Traceback (most recent call last):
+  File "optimized.py", line 54, in <module>
+    engine = mySQL_connect(credentials, port='3306', db='test_schema')
+NameError: name 'credentials' is not defined
+2019-09-07 12:13:27,555 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 12:13:27,557 - __main__ - INFO - MySQL connection was a success
+2019-09-07 12:16:37,399 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 12:16:37,401 - __main__ - INFO - MySQL connection was a success
+2019-09-07 12:59:04,580 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 12:59:04,582 - __main__ - INFO - MySQL connection was a success
+2019-09-07 13:00:22,092 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 13:00:22,094 - __main__ - INFO - MySQL connection was a success
+2019-09-07 17:43:34,353 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 17:43:34,355 - __main__ - INFO - MySQL connection was a success
+2019-09-07 17:45:51,938 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 17:45:51,940 - __main__ - INFO - MySQL connection was a success
+2019-09-07 17:47:23,247 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 17:47:23,248 - __main__ - INFO - MySQL connection was a success
+2019-09-07 17:47:53,411 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 17:47:53,413 - __main__ - INFO - MySQL connection was a success
+2019-09-07 17:48:47,881 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 17:48:47,883 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:09:37,413 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:09:37,415 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:13:27,292 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:13:27,294 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:21:59,883 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:21:59,885 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:23:17,840 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:23:17,844 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:31:17,033 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:31:17,034 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:34:25,371 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:34:25,373 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:35:33,230 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:35:33,232 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:36:37,641 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:36:37,645 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:37:08,014 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:37:08,016 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:40:53,330 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:40:53,332 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:44:56,757 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:44:56,759 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:45:49,721 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:45:49,724 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:50:39,983 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:50:39,984 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:54:22,304 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:54:22,306 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:56:03,243 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:56:03,246 - __main__ - INFO - MySQL connection was a success
+2019-09-07 18:58:03,205 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 18:58:03,209 - __main__ - INFO - MySQL connection was a success
+2019-09-07 19:00:59,911 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 19:00:59,912 - __main__ - INFO - MySQL connection was a success
+2019-09-07 19:02:40,853 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 19:02:40,856 - __main__ - INFO - MySQL connection was a success
+2019-09-07 19:07:10,502 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 19:07:10,504 - __main__ - INFO - MySQL connection was a success
+2019-09-07 19:20:58,420 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 19:20:58,424 - __main__ - INFO - MySQL connection was a success
+2019-09-07 19:21:43,061 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 19:21:43,063 - __main__ - INFO - MySQL connection was a success
+2019-09-07 19:22:40,926 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 19:22:40,928 - __main__ - INFO - MySQL connection was a success
+2019-09-07 19:23:32,565 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 19:23:32,567 - __main__ - INFO - MySQL connection was a success
+2019-09-07 19:25:01,721 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 19:25:01,722 - __main__ - INFO - MySQL connection was a success
+2019-09-07 19:27:54,520 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 19:27:54,522 - __main__ - INFO - MySQL connection was a success
+2019-09-07 19:28:17,095 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 19:28:17,096 - __main__ - INFO - MySQL connection was a success
+2019-09-07 23:40:36,577 - __main__ - INFO - Facebook authentication was a success
+2019-09-07 23:40:36,581 - __main__ - INFO - MySQL connection was a success
+2019-09-08 00:18:34,889 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 00:18:34,891 - __main__ - INFO - MySQL connection was a success
+2019-09-08 00:19:20,082 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 00:19:20,084 - __main__ - INFO - MySQL connection was a success
+2019-09-08 00:20:16,969 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 00:20:16,971 - __main__ - INFO - MySQL connection was a success
+2019-09-08 00:34:37,545 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 00:34:37,545 - __main__ - INFO - MySQL connection was a success
+2019-09-08 00:37:19,395 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 00:37:19,398 - __main__ - INFO - MySQL connection was a success
+2019-09-08 00:38:37,111 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 00:38:37,113 - __main__ - INFO - MySQL connection was a success
+2019-09-08 00:39:37,479 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 00:39:37,480 - __main__ - INFO - MySQL connection was a success
+2019-09-08 00:39:59,058 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 00:39:59,062 - __main__ - INFO - MySQL connection was a success
+2019-09-08 00:40:37,364 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 00:40:37,365 - __main__ - INFO - MySQL connection was a success
+2019-09-08 00:41:27,770 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 00:41:27,771 - __main__ - INFO - MySQL connection was a success
+2019-09-08 00:42:43,616 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 00:42:43,616 - __main__ - INFO - MySQL connection was a success
+2019-09-08 00:44:28,235 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 00:44:28,240 - __main__ - INFO - MySQL connection was a success
+2019-09-08 11:20:48,760 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 11:20:48,761 - __main__ - INFO - MySQL connection was a success
+2019-09-08 11:21:28,838 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 11:21:28,840 - __main__ - INFO - MySQL connection was a success
+2019-09-08 11:34:40,002 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 11:34:40,005 - __main__ - INFO - MySQL connection was a success
+2019-09-08 11:35:52,099 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 11:35:52,101 - __main__ - INFO - MySQL connection was a success
+2019-09-08 11:36:06,196 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 11:36:06,199 - __main__ - INFO - MySQL connection was a success
+2019-09-08 11:37:43,957 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 11:37:43,960 - __main__ - INFO - MySQL connection was a success
+2019-09-08 11:52:25,651 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 11:52:25,652 - __main__ - INFO - MySQL connection was a success
+2019-09-08 12:48:04,776 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 12:48:04,780 - __main__ - INFO - MySQL connection was a success
+2019-09-08 12:50:19,503 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 12:50:19,505 - __main__ - INFO - MySQL connection was a success
+2019-09-08 12:52:28,854 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 12:52:28,855 - __main__ - INFO - MySQL connection was a success
+2019-09-08 12:53:25,574 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 12:53:25,576 - __main__ - INFO - MySQL connection was a success
+2019-09-08 13:11:14,914 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 13:11:14,915 - __main__ - INFO - MySQL connection was a success
+2019-09-08 13:11:15,331 - __main__ - INFO - accounts dataframe created
+2019-09-08 13:11:16,995 - __main__ - INFO - Accounts table have been synced to database
+2019-09-08 13:11:22,831 - __main__ - INFO - campaigns dataframe created
+2019-09-08 13:12:05,378 - __main__ - INFO - Campaigns table has been synced to database
+2019-09-08 14:25:24,036 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 14:25:24,038 - __main__ - INFO - MySQL connection was a success
+2019-09-08 14:25:24,463 - __main__ - INFO - accounts dataframe created
+2019-09-08 14:25:25,576 - __main__ - INFO - Accounts table has been synced to database
+2019-09-08 14:25:32,896 - __main__ - INFO - campaigns dataframe created
+2019-09-08 14:26:11,127 - __main__ - INFO - Campaigns table has been synced to database
+2019-09-08 14:30:02,389 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 14:30:02,393 - __main__ - INFO - MySQL connection was a success
+2019-09-08 14:30:02,903 - __main__ - INFO - accounts dataframe created
+2019-09-08 14:30:04,131 - __main__ - INFO - Accounts table has been synced to database
+2019-09-08 14:30:10,095 - __main__ - INFO - campaigns dataframe created
+2019-09-08 14:30:48,895 - __main__ - INFO - Campaigns table has been synced to database
+2019-09-08 14:35:32,555 - __main__ - INFO - ads_insights dataframe created
+2019-09-08 14:39:53,377 - __main__ - INFO - Facebook authentication was a success
+2019-09-08 14:39:53,381 - __main__ - INFO - MySQL connection was a success
+2019-09-08 14:39:53,771 - __main__ - INFO - accounts dataframe created
+2019-09-08 14:39:55,242 - __main__ - INFO - Accounts table has been synced to database
+2019-09-08 14:40:00,682 - __main__ - INFO - campaigns dataframe created
+2019-09-08 14:40:47,141 - __main__ - INFO - Campaigns table has been synced to database
+2019-09-08 14:41:26,408 - __main__ - INFO - ads_insights dataframe created
