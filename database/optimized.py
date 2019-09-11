@@ -148,9 +148,39 @@ region_fields = [AdsInsights.Field.ad_id,
                  AdsInsights.Field.actions,
                  ]
 
+##
 #++++++++++++++++++++++++++++++++++++++++
 # | UPSERTING REQUEST DATA TO DATABASE
 #++++++++++++++++++++++++++++++++++++++++
+##
+def format_cols(df):
+    """ Function to extract common columns and perform
+    some manipulations
+    <-- takes a pandas dataframe
+    --> returns pandas dataframe
+    """
+    # App Installs
+    df['mobile_app_installs'] = pd.to_numeric(
+        df['actions'].apply(
+            extract_col, value='mobile_app_install'
+        )
+    )
+    # Registrations
+    df['registrations_completed'] = pd.to_numeric(
+        df['actions'].apply(
+            extract_col,
+            value='app_custom_event.fb_mobile_complete_registration'
+        )
+    )
+    # Link Clicks
+    df['clicks'] = pd.to_numeric(
+        df['actions'].apply(extract_col, value='link_click')
+    )
+    df['date_start'] = pd.to_datetime(df['date_start'])
+    df = df.drop(columns=['actions'])
+    df = df.where(pd.notnull(df), None)
+    return df
+
 
 def request_to_database(request, table, engine):
     """Take a facebook api request, load data into a
@@ -176,7 +206,6 @@ def request_to_database(request, table, engine):
                            columns = columns,
                            index=[0]
                           ).astype(dtype=dtypes)
-         df.to_csv('data/accounts.csv') # store df for manual check
          logger.info('accounts dataframe created')
     else:
         df = pd.DataFrame(request,
@@ -189,8 +218,9 @@ def request_to_database(request, table, engine):
     session = Session()
     # dataframes inserted or updated into database
     if table == 'accounts':
-        bulk_upsert(session, AccountsTable,
-                     df, id_col='account_id')
+        bulk_upsert(session, table=AccountsTable,
+                    table_name='accounts',
+                    df = df, id_cols=['account_id'])
         logger.info('Accounts table has been synced to database')
 
     if table == 'campaigns':
@@ -202,23 +232,42 @@ def request_to_database(request, table, engine):
         # nans throw errors so swap with None
         df = df.where(pd.notnull(df), None)
 
-        bulk_upsert(session, CampaignsTable,
-                   df, id_col='campaign_id')
+        bulk_upsert(session, table=CampaignsTable,
+                    table_name='campaigns',
+                   df=df, id_cols=['campaign_id'])
         logger.info('Campaigns table has been synced to database')
 
     if table == 'ads_insights':
-        print(table)
         # campaign id may refer to a deleted campaign which
         # is not contained in the Campaigns table of the database
         # we keep only those ids which are;
         campaign_ids = session.query(CampaignsTable.campaign_id)
         campaign_ids = [i for i, in campaign_ids]
-        print(campaign_ids)
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
+        df = format_cols(df)
+
+        bulk_upsert(session, table=AdsInsightsTable,
+                    table_name='ads_insights',
+                    df=df, id_cols=['ad_id', 'date_start'])
+        logger.info('Ads Insights table has been synced to database')
+
+    if table == 'ads_insights_age_and_gender':
+        campaign_ids = session.query(CampaignsTable.campaign_id)
+        df = df.loc[df['campaign_id'].isin(campaign_ids), :]
+        df = format_cols(df)
+
+        bulk_upsert(session, table=AdsInsightsAgeGenderTable,
+                    table_name='ads_insights_age_and_gender',
+                    df=df, id_cols=['ad_id', ... ])
+        logger.info('Ads Insights Age and Gender table has been synced to database')
 
     df.to_csv('data/' + table + '.csv')
     session.close()
-
+##
+#+++++++++++++++++++++++++++++++++++++
+# REQUESTS AND PUSHES
+#+++++++++++++++++++++++++++++++++++++
+##
 account_request = get_request(account_id='act_22612640',
                               table='accounts',
                               params=account_params,
@@ -229,7 +278,7 @@ request_to_database(request=account_request,
                     table='accounts',
                     engine=engine
                     )
-
+##
 campaign_request = get_request(account_id='act_22612640',
                                table='campaigns',
                                params=campaign_params,
@@ -240,16 +289,26 @@ request_to_database(request=campaign_request,
                     table='campaigns',
                     engine=engine
                     )
+
 ##
 ads_request = get_request(account_id='act_22612640',
                           table='ads_insights',
                           params=ads_params,
                           fields=ads_fields
                           )
-##
+
 request_to_database(request=ads_request,
                     table='ads_insights',
                     engine=engine
                     )
-
 ##
+agegender_request = get_request(account_id='act_22612640',
+                                table='ads_insights_age_and_gender',
+                                params=agegender_params,
+                                fields=agegender_fields
+                                )
+
+request_to_database(request=agegender_request,
+                    table='ads_insights_age_and_gender',
+                    engine=engine
+                    )

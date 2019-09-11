@@ -1,7 +1,8 @@
 import json
+import logging
 import pandas as pd
 import time
-
+import yaml
 from facebook_business.adobjects.adaccount import AdAccount
 from facebook_business.adobjects.adsinsights import AdsInsights
 from facebook_business.adobjects.adreportrun import AdReportRun
@@ -9,6 +10,18 @@ from facebook_business.adobjects.campaign import Campaign
 from facebook_business.api import FacebookAdsApi
 from sqlalchemy.dialects.mysql import insert
 from sqlalchemy.orm import sessionmaker
+
+##
+#++++++++++++++++++++
+# LOGGER
+#++++++++++++++++++++
+##
+with open('config.yaml', 'r') as f:
+    config = yaml.safe_load(f.read())
+    logging.config.dictConfig(config)
+
+logger = logging.getLogger(__name__)
+##
 
 def facebookconnect(secrets_path):
     """Connect to Facebook Marketing API.
@@ -27,8 +40,8 @@ def facebookconnect(secrets_path):
 #++++++++++++++++++++
 # MYSQL FUNCTION
 #++++++++++++++++++++
-
-def bulk_upsert(session, table, df, id_col):
+# NEED TO INCLUDE BOTH TABLE NAME AND CLASS
+def bulk_upsert(session, table, table_name,  df, id_cols):
     """Perform a bulk insert of the given list of mapping dictionaries.
     The bulk insert feature allows plain Python dictionaries to be used
     as the source of simple INSERT operations which can be more easily
@@ -38,34 +51,48 @@ def bulk_upsert(session, table, df, id_col):
     simple rows.
     --------------------------------------------------------------------
     table: a mapped class (i.e. database table)
+    table_name: the table name associated with table
     df: dataframe to be converted to a list of dictionaries
+    id_col: a list of the primary keys in the table
     """
-    # getattr allows passing string argument to table object
-    update_query = session.query(getattr(table, id_col)).filter(
-        getattr(table, id_col).in_(list(pd.to_numeric(df[id_col])))
-    )
-    # initialize list of ids of records to update
-    duplicate_keys = []
-    duplicate_keys = [str(getattr(k, id_col)) for k in update_query]
-    if session.query(table).count() > 0:
-        # ids in query are integers, ids in df is str
-        duplicate_keys = [str(getattr(k, id_col)) for k in update_query]
-        update_df = df.loc[df[id_col].isin(duplicate_keys), ]
+    primary_keys = ",".join(id_cols) # join PKs in string for query
+    query = "SELECT " + primary_keys + " FROM " + table_name
+    # store df of rows that exist in db and should be updated
+    update_df = pd.read_sql_query(query, session.bind)
+    merged_df = pd.merge(df, update_df, how='left', indicator=True)
+    update_df = merged_df[merged_df['_merge']=='both'] # both exist
+    update_df = update_df.drop(columns=['_merge'])
+    # store df of rows that do not exist
+    insert_df = merged_df[merged_df['_merge']=='left_only']
+    insert_df = insert_df.drop(columns=['_merge'])
+    # after merge, the dataframes used as inputs for upserts
+    # must be converted back to string objects, else
+    # value error with timestamp...
+    if 'date_start' in update_df:
+        update_df['date_start'] = update_df['date_start'].astype(str)
+        insert_df['date_start'] = update_df['date_start'].astype(str)
+
+    if not update_df.empty:
+        num_updated = len(update_df.index)
+        print(num_updated)
         update_df = update_df.to_dict(orient="records")
         session.bulk_update_mappings(
             table,
             update_df
         )
-
-    insert_df = df.loc[df[id_col].isin(duplicate_keys) == False, ]
-    insert_df = insert_df.to_dict(orient="records")
-    # insert any records that do not already exist in db
-    session.bulk_insert_mappings(
-        table,
-        insert_df,
-        render_nulls=True
-    )
-    session.commit()
+        logging.info('%s rows updated', num_updated)
+    if not insert_df.empty:
+        num_inserted = len(insert_df.index)
+        num_inserted
+        insert_df = insert_df.to_dict(orient="records")
+        # insert any records that do not already exist in db
+        session.bulk_insert_mappings(
+            table,
+            insert_df,
+            render_nulls=True
+        )
+        logging.info('%s rows inserted', num_inserted)
+        session.commit()
 
 #++++++++++++++++++++++++
 # DATAFRAME FUNCTIONS

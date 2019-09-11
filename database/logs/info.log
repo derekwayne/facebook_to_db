@@ -172,3 +172,139 @@ NameError: name 'credentials' is not defined
 2019-09-08 14:40:00,682 - __main__ - INFO - campaigns dataframe created
 2019-09-08 14:40:47,141 - __main__ - INFO - Campaigns table has been synced to database
 2019-09-08 14:41:26,408 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 15:08:00,750 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 15:08:00,752 - __main__ - INFO - MySQL connection was a success
+2019-09-10 15:08:01,101 - __main__ - INFO - accounts dataframe created
+2019-09-10 15:08:01,925 - __main__ - INFO - Accounts table has been synced to database
+2019-09-10 15:08:07,042 - __main__ - INFO - campaigns dataframe created
+2019-09-10 15:08:28,044 - __main__ - INFO - Campaigns table has been synced to database
+2019-09-10 15:09:06,987 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 15:11:13,179 - __main__ - INFO - Ads Insights table has been synced to database
+2019-09-10 15:16:31,982 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 15:16:31,984 - __main__ - INFO - MySQL connection was a success
+2019-09-10 15:16:32,547 - __main__ - INFO - accounts dataframe created
+2019-09-10 15:16:34,104 - __main__ - INFO - Accounts table has been synced to database
+2019-09-10 15:16:41,926 - __main__ - INFO - campaigns dataframe created
+2019-09-10 15:17:11,280 - __main__ - INFO - Campaigns table has been synced to database
+2019-09-10 15:17:49,488 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 15:20:41,229 - __main__ - INFO - Ads Insights table has been synced to database
+2019-09-10 15:31:13,580 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 15:31:13,583 - __main__ - INFO - MySQL connection was a success
+2019-09-10 15:31:13,983 - __main__ - INFO - accounts dataframe created
+2019-09-10 15:31:15,052 - __main__ - INFO - Accounts table has been synced to database
+2019-09-10 15:31:19,615 - __main__ - INFO - campaigns dataframe created
+2019-09-10 15:31:52,898 - __main__ - INFO - Campaigns table has been synced to database
+2019-09-10 15:32:28,875 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 15:35:22,761 - __main__ - INFO - Ads Insights table has been synced to database
+2019-09-10 16:08:47,437 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 16:08:47,440 - __main__ - INFO - MySQL connection was a success
+2019-09-10 16:08:47,748 - __main__ - INFO - accounts dataframe created
+2019-09-10 16:08:48,747 - __main__ - INFO - Accounts table has been synced to database
+2019-09-10 16:09:04,785 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 16:09:04,787 - __main__ - INFO - MySQL connection was a success
+2019-09-10 16:09:05,186 - __main__ - INFO - accounts dataframe created
+2019-09-10 16:09:06,349 - __main__ - INFO - Accounts table has been synced to database
+2019-09-10 16:09:11,036 - __main__ - INFO - campaigns dataframe created
+2019-09-10 16:09:44,191 - __main__ - INFO - Campaigns table has been synced to database
+2019-09-10 16:10:22,658 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 16:10:22,945 - __main__ - INFO - Ads Insights table has been synced to database
+2019-09-10 16:12:27,576 - __main__ - INFO - ads_insights_age_and_gender dataframe created
+2019-09-10 16:16:32,787 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 16:16:32,788 - __main__ - INFO - MySQL connection was a success
+2019-09-10 16:16:33,095 - __main__ - INFO - accounts dataframe created
+2019-09-10 16:16:33,919 - __main__ - INFO - Accounts table has been synced to database
+2019-09-10 16:16:38,934 - __main__ - INFO - campaigns dataframe created
+2019-09-10 16:36:18,127 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 16:36:22,169 - __main__ - INFO - MySQL connection was a success
+2019-09-10 18:02:54,015 - __main__ - INFO - accounts dataframe created
+2019-09-10 18:04:41,340 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 18:04:44,648 - __main__ - INFO - MySQL connection was a success
+2019-09-10 18:05:00,167 - __main__ - INFO - accounts dataframe created
+2019-09-10 18:05:41,564 - __main__ - INFO - accounts dataframe created
+2019-09-10 18:06:51,446 - __main__ - INFO - accounts dataframe created
+2019-09-10 18:07:18,994 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 18:07:22,163 - __main__ - INFO - MySQL connection was a success
+2019-09-10 18:07:42,821 - __main__ - INFO - accounts dataframe created
+2019-09-10 18:12:20,685 - __main__ - INFO - accounts dataframe created
+2019-09-10 19:55:31,824 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 19:55:36,232 - __main__ - INFO - MySQL connection was a success
+2019-09-10 19:57:15,022 - __main__ - INFO - accounts dataframe created
+2019-09-10 19:59:01,623 - __main__ - INFO - accounts dataframe created
+2019-09-10 20:01:46,128 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 20:01:48,674 - __main__ - INFO - MySQL connection was a success
+2019-09-10 20:02:04,873 - __main__ - INFO - accounts dataframe created
+2019-09-10 20:02:05,935 - root - INFO - 1 rows updated
+2019-09-10 20:02:05,937 - __main__ - INFO - Accounts table has been synced to database
+2019-09-10 20:02:32,986 - __main__ - INFO - campaigns dataframe created
+2019-09-10 20:03:11,576 - root - INFO - 330 rows updated
+2019-09-10 20:03:11,579 - __main__ - INFO - Campaigns table has been synced to database
+2019-09-10 20:09:59,596 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 20:16:46,657 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 20:19:20,289 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 20:20:40,069 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 20:49:49,908 - sqlalchemy.pool.impl.QueuePool - ERROR - Exception during reset or similar
+Traceback (most recent call last):
+  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/pymysql/connections.py", line 691, in _read_bytes
+    data = self._rfile.read(num_bytes)
+  File "/home/wayned/anaconda3/lib/python3.7/socket.py", line 589, in readinto
+    return self._sock.recv_into(b)
+TimeoutError: [Errno 110] Connection timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/sqlalchemy/pool/base.py", line 680, in _finalize_fairy
+    fairy._reset(pool)
+  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/sqlalchemy/pool/base.py", line 867, in _reset
+    pool._dialect.do_rollback(self)
+  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/sqlalchemy/dialects/mysql/base.py", line 2253, in do_rollback
+    dbapi_connection.rollback()
+  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/pymysql/connections.py", line 430, in rollback
+    self._read_ok_packet()
+  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/pymysql/connections.py", line 394, in _read_ok_packet
+    pkt = self._read_packet()
+  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/pymysql/connections.py", line 657, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/pymysql/connections.py", line 699, in _read_bytes
+    "Lost connection to MySQL server during query (%s)" % (e,))
+pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during query ([Errno 110] Connection timed out)')
+2019-09-10 20:49:55,429 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 20:58:19,270 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 20:58:19,271 - __main__ - INFO - MySQL connection was a success
+2019-09-10 20:58:19,877 - __main__ - INFO - accounts dataframe created
+2019-09-10 20:58:21,002 - root - INFO - 1 rows updated
+2019-09-10 20:58:21,003 - __main__ - INFO - Accounts table has been synced to database
+2019-09-10 20:58:27,554 - __main__ - INFO - campaigns dataframe created
+2019-09-10 20:59:20,107 - root - INFO - 330 rows updated
+2019-09-10 20:59:20,108 - __main__ - INFO - Campaigns table has been synced to database
+2019-09-10 20:59:59,867 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 21:19:25,438 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 21:19:28,067 - __main__ - INFO - MySQL connection was a success
+2019-09-10 21:20:31,535 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 21:27:57,812 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 21:28:00,300 - __main__ - INFO - MySQL connection was a success
+2019-09-10 21:28:25,778 - __main__ - INFO - accounts dataframe created
+2019-09-10 21:32:33,387 - __main__ - INFO - accounts dataframe created
+2019-09-10 21:33:11,540 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 21:33:15,131 - __main__ - INFO - MySQL connection was a success
+2019-09-10 21:33:30,732 - __main__ - INFO - accounts dataframe created
+2019-09-10 21:33:32,352 - root - INFO - 1 rows updated
+2019-09-10 21:33:32,355 - __main__ - INFO - Accounts table has been synced to database
+2019-09-10 21:34:15,779 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 21:42:17,051 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 21:42:21,404 - __main__ - INFO - MySQL connection was a success
+2019-09-10 21:43:17,379 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 21:50:12,110 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 21:50:12,111 - __main__ - INFO - MySQL connection was a success
+2019-09-10 21:50:12,524 - __main__ - INFO - accounts dataframe created
+2019-09-10 21:50:30,526 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 21:50:30,527 - __main__ - INFO - MySQL connection was a success
+2019-09-10 21:50:30,855 - __main__ - INFO - accounts dataframe created
+2019-09-10 21:50:50,316 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 21:50:53,390 - __main__ - INFO - MySQL connection was a success
+2019-09-10 21:51:50,613 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 21:54:30,076 - __main__ - INFO - Facebook authentication was a success
+2019-09-10 21:54:32,261 - __main__ - INFO - MySQL connection was a success
+2019-09-10 21:55:27,419 - __main__ - INFO - ads_insights dataframe created
+2019-09-10 21:59:25,566 - root - INFO - 3734 rows updated
+2019-09-10 21:59:25,573 - __main__ - INFO - Ads Insights table has been synced to database
