@@ -123,7 +123,7 @@ class AdsInsightsRegionTable(Base):
                              'campaign_id', 'date_start',
                              'region'),
     )
-    ad_id = Column(BigInteger)
+    ad_id = Column(BigInteger, ForeignKey('ads_insights.ad_id'))
     account_id = Column(BigInteger, ForeignKey('accounts.account_id'))
     campaign_id = Column(BigInteger, ForeignKey('campaigns.campaign_id'))
     date_start = Column(DateTime)

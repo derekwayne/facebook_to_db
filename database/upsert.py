@@ -31,43 +31,43 @@ from models import (
     AdsInsightsRegionTable,
 )
 from sqlalchemy.orm import sessionmaker
-##
+
 #++++++++++++++++++++
 # LOGGER
 #++++++++++++++++++++
-##
+
 with open('config.yaml', 'r') as f:
     config = yaml.safe_load(f.read())
     logging.config.dictConfig(config)
 
 logger = logging.getLogger(__name__)
-##
+
 #+++++++++++++++++++++++++++++++++++++
 # | FACEBOOK AUTHENTICATION |
 #+++++++++++++++++++++++++++++++++++++
-##
+
 secrets = '/home/wayned/acquire/credentials/facebook_business/client_secrets.json'
 try:
     facebookconnect(secrets_path=secrets)
     logger.info('Facebook authentication was a success')
 except Exception as e:
     logging.exception('Failed to connect to Facebook')
-##
+
 #+++++++++++++++++++++++++++++++++++++
 # ENGINE CONNECTION
 #+++++++++++++++++++++++++++++++++++++
-##
+
 credentials = '/home/wayned/acquire/credentials/database/credentials.json'
 try:
     engine = mySQL_connect(credentials, port='3306', db='test_schema')
     logger.info('MySQL connection was a success')
 except Exception as e:
     logging.exception('Failed to connect to MySQL')
-##
+
 #++++++++++++++++++++++++++++++++++++++++++
 # | PARAMETERS FOR FACEBOOK API REQUESTS |
 #++++++++++++++++++++++++++++++++++++++++++
-##
+
 # ACCOUNT
 account_params = {'level': 'account'}
 account_fields = [AdAccount.Field.account_id,
@@ -148,11 +148,11 @@ region_fields = [AdsInsights.Field.ad_id,
                  AdsInsights.Field.actions,
                  ]
 
-##
+
 #++++++++++++++++++++++++++++++++++++++++
 # | UPSERTING REQUEST DATA TO DATABASE
 #++++++++++++++++++++++++++++++++++++++++
-##
+
 def format_cols(df):
     """ Function to extract common columns and perform
     some manipulations
@@ -178,7 +178,6 @@ def format_cols(df):
     )
     df['date_start'] = pd.to_datetime(df['date_start'])
     df = df.drop(columns=['actions'])
-    df = df.where(pd.notnull(df), None)
     return df
 
 
@@ -218,6 +217,7 @@ def request_to_database(request, table, engine):
     session = Session()
     # dataframes inserted or updated into database
     if table == 'accounts':
+        df.to_csv('data/' + table + '.csv')
         bulk_upsert(session, table=AccountsTable,
                     table_name='accounts',
                     df = df, id_cols=['account_id'])
@@ -231,7 +231,7 @@ def request_to_database(request, table, engine):
                   inplace=True)
         # nans throw errors so swap with None
         df = df.where(pd.notnull(df), None)
-
+        df.to_csv('data/' + table + '.csv')
         bulk_upsert(session, table=CampaignsTable,
                     table_name='campaigns',
                    df=df, id_cols=['campaign_id'])
@@ -245,7 +245,7 @@ def request_to_database(request, table, engine):
         campaign_ids = [i for i, in campaign_ids]
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
         df = format_cols(df)
-
+        df.to_csv('data/' + table + '.csv')
         bulk_upsert(session, table=AdsInsightsTable,
                     table_name='ads_insights',
                     df=df, id_cols=['ad_id', 'date_start'])
@@ -253,12 +253,14 @@ def request_to_database(request, table, engine):
 
     if table == 'ads_insights_age_and_gender':
         campaign_ids = session.query(CampaignsTable.campaign_id)
+        campaign_ids = [i for i, in campaign_ids]
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
         df = format_cols(df)
-
+        df.to_csv('data/' + table + '.csv')
         bulk_upsert(session, table=AdsInsightsAgeGenderTable,
                     table_name='ads_insights_age_and_gender',
-                    df=df, id_cols=['ad_id', ... ])
+                    df=df, id_cols=['ad_id', 'account_id', 'campaign_id', 'date_start',
+                                    'age', 'gender'])
         logger.info('Ads Insights Age and Gender table has been synced to database')
 
     df.to_csv('data/' + table + '.csv')
@@ -312,3 +314,4 @@ request_to_database(request=agegender_request,
                     table='ads_insights_age_and_gender',
                     engine=engine
                     )
+##

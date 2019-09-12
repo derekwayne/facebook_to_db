@@ -1,4 +1,4 @@
-from database import fbtomysql
+from database import upsert
 
 if __name__ == '__main__':
-    fbtomysql.run()
+    upsert.run()

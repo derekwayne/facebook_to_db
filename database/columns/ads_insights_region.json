@@ -1,0 +1,14 @@
+{
+  "ad_id": "int64",
+  "account_id": "int64",
+  "campaign_id": "int64",
+  "date_start": "object",
+  "region": "object",
+  "frequency": "float64",
+  "cpc": "float64",
+  "cpm": "float64",
+  "spend": "float64",
+  "impressions": "int64",
+  "ctr": "float64",
+  "actions": "object"
+}

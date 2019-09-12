@@ -59,18 +59,30 @@ def bulk_upsert(session, table, table_name,  df, id_cols):
     query = "SELECT " + primary_keys + " FROM " + table_name
     # store df of rows that exist in db and should be updated
     update_df = pd.read_sql_query(query, session.bind)
+    print("query dataframe types: ")
+    print(update_df.dtypes)
     merged_df = pd.merge(df, update_df, how='left', indicator=True)
     update_df = merged_df[merged_df['_merge']=='both'] # both exist
     update_df = update_df.drop(columns=['_merge'])
+    # workaround for nans
+    update_df = update_df.where(pd.notnull(update_df), None)
+    print("update df:")
+    print(update_df.info())
     # store df of rows that do not exist
     insert_df = merged_df[merged_df['_merge']=='left_only']
     insert_df = insert_df.drop(columns=['_merge'])
+    # workaround for nans
+    insert_df = insert_df.where(pd.notnull(insert_df), None)
+    print("insert df:")
+    print(insert_df.info())
     # after merge, the dataframes used as inputs for upserts
     # must be converted back to string objects, else
     # value error with timestamp...
     if 'date_start' in update_df:
         update_df['date_start'] = update_df['date_start'].astype(str)
-        insert_df['date_start'] = update_df['date_start'].astype(str)
+        insert_df['date_start'] = insert_df['date_start'].astype(str)
+        print("after string conversion:")
+        print(insert_df.info())
 
     if not update_df.empty:
         num_updated = len(update_df.index)
@@ -83,6 +95,7 @@ def bulk_upsert(session, table, table_name,  df, id_cols):
         logging.info('%s rows updated', num_updated)
     if not insert_df.empty:
         num_inserted = len(insert_df.index)
+        print(num_inserted)
         num_inserted
         insert_df = insert_df.to_dict(orient="records")
         # insert any records that do not already exist in db

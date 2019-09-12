@@ -308,3 +308,54 @@ pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during que
 2019-09-10 21:55:27,419 - __main__ - INFO - ads_insights dataframe created
 2019-09-10 21:59:25,566 - root - INFO - 3734 rows updated
 2019-09-10 21:59:25,573 - __main__ - INFO - Ads Insights table has been synced to database
+2019-09-11 10:15:36,376 - __main__ - INFO - Facebook authentication was a success
+2019-09-11 10:15:39,876 - __main__ - INFO - MySQL connection was a success
+2019-09-11 10:22:51,164 - __main__ - INFO - ads_insights_age_and_gender dataframe created
+2019-09-11 10:35:01,384 - __main__ - INFO - ads_insights_age_and_gender dataframe created
+2019-09-11 10:49:57,457 - __main__ - INFO - Facebook authentication was a success
+2019-09-11 10:50:00,728 - __main__ - INFO - MySQL connection was a success
+2019-09-11 10:52:58,230 - __main__ - INFO - ads_insights_age_and_gender dataframe created
+2019-09-11 10:57:35,634 - __main__ - INFO - Facebook authentication was a success
+2019-09-11 10:57:38,864 - __main__ - INFO - MySQL connection was a success
+2019-09-11 11:00:13,762 - __main__ - INFO - ads_insights_age_and_gender dataframe created
+2019-09-11 11:04:26,403 - __main__ - INFO - Facebook authentication was a success
+2019-09-11 11:04:26,405 - __main__ - INFO - MySQL connection was a success
+2019-09-11 11:05:14,281 - __main__ - INFO - Facebook authentication was a success
+2019-09-11 11:05:14,285 - __main__ - INFO - MySQL connection was a success
+2019-09-11 14:24:05,139 - __main__ - INFO - Facebook authentication was a success
+2019-09-11 14:24:05,144 - __main__ - INFO - MySQL connection was a success
+2019-09-11 14:24:19,829 - __main__ - INFO - accounts dataframe created
+2019-09-11 14:24:20,563 - root - INFO - 1 rows updated
+2019-09-11 14:24:20,564 - __main__ - INFO - Accounts table has been synced to database
+2019-09-11 14:26:33,777 - __main__ - INFO - ads_insights_age_and_gender dataframe created
+2019-09-11 14:48:40,321 - __main__ - INFO - Facebook authentication was a success
+2019-09-11 14:48:40,324 - __main__ - INFO - MySQL connection was a success
+2019-09-11 14:48:53,282 - __main__ - INFO - accounts dataframe created
+2019-09-11 14:48:54,038 - root - INFO - 1 rows updated
+2019-09-11 14:48:54,039 - __main__ - INFO - Accounts table has been synced to database
+2019-09-11 14:52:25,022 - __main__ - INFO - ads_insights_age_and_gender dataframe created
+2019-09-11 14:57:31,772 - __main__ - INFO - campaigns dataframe created
+2019-09-11 14:57:57,417 - root - INFO - 330 rows updated
+2019-09-11 14:57:57,420 - __main__ - INFO - Campaigns table has been synced to database
+2019-09-11 15:02:16,667 - __main__ - INFO - Facebook authentication was a success
+2019-09-11 15:02:16,672 - __main__ - INFO - MySQL connection was a success
+2019-09-11 15:05:42,115 - __main__ - INFO - ads_insights_age_and_gender dataframe created
+2019-09-11 15:12:52,210 - __main__ - INFO - Facebook authentication was a success
+2019-09-11 15:12:52,214 - __main__ - INFO - MySQL connection was a success
+2019-09-11 15:15:30,455 - __main__ - INFO - ads_insights_age_and_gender dataframe created
+2019-09-11 18:21:18,424 - __main__ - INFO - Facebook authentication was a success
+2019-09-11 18:21:18,429 - __main__ - INFO - MySQL connection was a success
+2019-09-11 18:23:31,224 - __main__ - INFO - accounts dataframe created
+2019-09-11 18:23:31,926 - root - INFO - 1 rows updated
+2019-09-11 18:23:31,928 - __main__ - INFO - Accounts table has been synced to database
+2019-09-11 18:27:06,275 - __main__ - INFO - ads_insights_age_and_gender dataframe created
+2019-09-11 18:38:47,238 - __main__ - INFO - Facebook authentication was a success
+2019-09-11 18:38:47,244 - __main__ - INFO - MySQL connection was a success
+2019-09-11 18:41:05,393 - __main__ - INFO - ads_insights_age_and_gender dataframe created
+2019-09-11 18:51:48,534 - __main__ - INFO - ads_insights dataframe created
+2019-09-11 18:53:46,774 - root - INFO - 3584 rows updated
+2019-09-11 18:53:46,890 - root - INFO - 150 rows inserted
+2019-09-11 18:53:46,971 - __main__ - INFO - Ads Insights table has been synced to database
+2019-09-11 18:57:42,643 - __main__ - INFO - ads_insights_age_and_gender dataframe created
+2019-09-11 18:57:50,110 - root - INFO - 37279 rows inserted
+2019-09-11 18:57:50,234 - __main__ - INFO - Ads Insights Age and Gender table has been synced to database
