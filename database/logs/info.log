@@ -359,3 +359,41 @@ pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during que
 2019-09-11 18:57:42,643 - __main__ - INFO - ads_insights_age_and_gender dataframe created
 2019-09-11 18:57:50,110 - root - INFO - 37279 rows inserted
 2019-09-11 18:57:50,234 - __main__ - INFO - Ads Insights Age and Gender table has been synced to database
+2019-09-12 12:50:58,684 - __main__ - INFO - Facebook authentication was a success
+2019-09-12 12:50:58,685 - __main__ - INFO - MySQL connection was a success
+2019-09-12 12:51:17,771 - __main__ - INFO - accounts dataframe created
+2019-09-12 12:51:18,698 - root - INFO - 1 rows updated
+2019-09-12 12:51:18,699 - __main__ - INFO - Accounts table has been synced to database
+2019-09-12 12:51:35,634 - __main__ - INFO - campaigns dataframe created
+2019-09-12 12:52:07,283 - root - INFO - 330 rows updated
+2019-09-12 12:52:07,285 - __main__ - INFO - Campaigns table has been synced to database
+2019-09-12 13:05:32,485 - __main__ - INFO - ads_insights dataframe created
+2019-09-12 13:08:20,978 - root - INFO - 3511 rows updated
+2019-09-12 13:08:21,117 - root - INFO - 155 rows inserted
+2019-09-12 13:08:21,228 - __main__ - INFO - Ads Insights table has been synced to database
+2019-09-12 13:13:08,542 - __main__ - INFO - ads_insights_region dataframe created
+2019-09-12 14:04:53,353 - __main__ - INFO - ads_insights_region dataframe created
+2019-09-12 14:24:32,457 - __main__ - INFO - Facebook authentication was a success
+2019-09-12 14:24:32,461 - __main__ - INFO - MySQL connection was a success
+2019-09-12 14:27:45,606 - __main__ - INFO - ads_insights_region dataframe created
+2019-09-12 14:43:22,714 - __main__ - INFO - ads_insights_region dataframe created
+2019-09-12 14:47:12,551 - __main__ - INFO - Facebook authentication was a success
+2019-09-12 14:47:12,554 - __main__ - INFO - MySQL connection was a success
+2019-09-12 16:04:58,861 - __main__ - INFO - ads_insights_region dataframe created
+2019-09-12 16:05:09,568 - root - INFO - 42339 rows inserted
+2019-09-12 16:28:01,196 - __main__ - INFO - Facebook authentication was a success
+2019-09-12 16:28:01,198 - __main__ - INFO - MySQL connection was a success
+2019-09-12 16:28:21,685 - __main__ - INFO - accounts dataframe created
+2019-09-12 16:28:22,698 - root - INFO - 1 rows inserted
+2019-09-12 16:28:22,800 - __main__ - INFO - Accounts table has been synced to database
+2019-09-12 16:28:23,729 - __main__ - INFO - campaigns dataframe created
+2019-09-12 16:28:24,084 - root - INFO - 53 rows inserted
+2019-09-12 16:28:24,183 - __main__ - INFO - Campaigns table has been synced to database
+2019-09-12 16:28:33,664 - __main__ - INFO - ads_insights dataframe created
+2019-09-12 16:28:34,946 - root - INFO - 667 rows inserted
+2019-09-12 16:28:35,044 - __main__ - INFO - Ads Insights table has been synced to database
+2019-09-12 16:39:12,156 - __main__ - INFO - ads_insights_age_and_gender dataframe created
+2019-09-12 16:39:16,460 - root - INFO - 10297 rows inserted
+2019-09-12 16:39:16,550 - __main__ - INFO - Ads Insights Age and Gender table has been synced to database
+2019-09-12 16:49:33,519 - __main__ - INFO - ads_insights_region dataframe created
+2019-09-12 16:49:36,912 - root - INFO - 2275 rows inserted

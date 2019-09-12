@@ -259,10 +259,22 @@ def request_to_database(request, table, engine):
         df.to_csv('data/' + table + '.csv')
         bulk_upsert(session, table=AdsInsightsAgeGenderTable,
                     table_name='ads_insights_age_and_gender',
-                    df=df, id_cols=['ad_id', 'account_id', 'campaign_id', 'date_start',
+                    df=df, id_cols=['ad_id', 'account_id',
+                                    'campaign_id', 'date_start',
                                     'age', 'gender'])
         logger.info('Ads Insights Age and Gender table has been synced to database')
 
+    if table == 'ads_insights_region':
+        campaign_ids = session.query(CampaignsTable.campaign_id)
+        campaign_ids = [i for i, in campaign_ids]
+        df = df.loc[df['campaign_id'].isin(campaign_ids), :]
+        df = format_cols(df)
+        df.to_csv('data/' + table + '.csv')
+        bulk_upsert(session, table=AdsInsightsRegionTable,
+                    table_name='ads_insights_region',
+                    df=df, id_cols=['ad_id', 'account_id', 'campaign_id',
+                                    'date_start', 'region'])
+        logger.info('Ads Insights Region table has been synced to database')
     df.to_csv('data/' + table + '.csv')
     session.close()
 ##
@@ -270,48 +282,70 @@ def request_to_database(request, table, engine):
 # REQUESTS AND PUSHES
 #+++++++++++++++++++++++++++++++++++++
 ##
-account_request = get_request(account_id='act_22612640',
-                              table='accounts',
-                              params=account_params,
-                              fields=account_fields
+accounts_list = ['act_382018871951335']
+
+for account in accounts_list:
+    # ACCOUNTS TABLE
+    account_request = get_request(account_id=account,
+                                  table='accounts',
+                                  params=account_params,
+                                  fields=account_fields
+                                  )
+
+    request_to_database(request=account_request,
+                        table='accounts',
+                        engine=engine
+                        )
+    # CAMPAIGNS TABLE
+    campaign_request = get_request(account_id=account,
+                                   table='campaigns',
+                                   params=campaign_params,
+                                   fields=campaign_fields
+                                   )
+
+    request_to_database(request=campaign_request,
+                        table='campaigns',
+                        engine=engine
+                        )
+
+    # ADS INSIGHTS TABLE
+    ads_request = get_request(account_id=account,
+                              table='ads_insights',
+                              params=ads_params,
+                              fields=ads_fields
                               )
 
-request_to_database(request=account_request,
-                    table='accounts',
-                    engine=engine
-                    )
-##
-campaign_request = get_request(account_id='act_22612640',
-                               table='campaigns',
-                               params=campaign_params,
-                               fields=campaign_fields
-                               )
+    request_to_database(request=ads_request,
+                        table='ads_insights',
+                        engine=engine
+                        )
 
-request_to_database(request=campaign_request,
-                    table='campaigns',
-                    engine=engine
-                    )
+    # WAIT 10 MINUTES
+    time.sleep(600)
 
-##
-ads_request = get_request(account_id='act_22612640',
-                          table='ads_insights',
-                          params=ads_params,
-                          fields=ads_fields
-                          )
+    # AGE AND GENDER TABLE
+    agegender_request = get_request(account_id=account,
+                                    table='ads_insights_age_and_gender',
+                                    params=agegender_params,
+                                    fields=agegender_fields
+                                    )
 
-request_to_database(request=ads_request,
-                    table='ads_insights',
-                    engine=engine
-                    )
-##
-agegender_request = get_request(account_id='act_22612640',
-                                table='ads_insights_age_and_gender',
-                                params=agegender_params,
-                                fields=agegender_fields
-                                )
+    request_to_database(request=agegender_request,
+                        table='ads_insights_age_and_gender',
+                        engine=engine
+                        )
 
-request_to_database(request=agegender_request,
-                    table='ads_insights_age_and_gender',
-                    engine=engine
-                    )
-##
+    # WAIT 10 MINUTES
+    time.sleep(600)
+
+    # REGION TABLE
+    region_request = get_request(account_id=account,
+                             table='ads_insights_region',
+                             params=region_params,
+                             fields=region_fields
+                             )
+
+    request_to_database(request=region_request,
+                        table='ads_insights_region',
+                        engine=engine
+                        )
