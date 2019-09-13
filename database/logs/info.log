@@ -397,3 +397,18 @@ pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during que
 2019-09-12 16:39:16,550 - __main__ - INFO - Ads Insights Age and Gender table has been synced to database
 2019-09-12 16:49:33,519 - __main__ - INFO - ads_insights_region dataframe created
 2019-09-12 16:49:36,912 - root - INFO - 2275 rows inserted
+2019-09-13 09:45:16,111 - database.upsert - INFO - Facebook authentication was a success
+2019-09-13 09:45:16,113 - database.upsert - INFO - MySQL connection was a success
+2019-09-13 09:45:16,588 - database.upsert - INFO - accounts dataframe created
+2019-09-13 09:45:17,675 - root - INFO - 1 rows inserted
+2019-09-13 09:45:17,766 - database.upsert - INFO - Accounts table has been synced to database
+2019-09-13 09:45:20,697 - database.upsert - INFO - campaigns dataframe created
+2019-09-13 09:45:21,018 - root - INFO - 220 rows inserted
+2019-09-13 09:45:21,109 - database.upsert - INFO - Campaigns table has been synced to database
+2019-09-13 09:45:54,249 - database.upsert - INFO - ads_insights dataframe created
+2019-09-13 09:45:56,575 - root - INFO - 2399 rows inserted
+2019-09-13 09:45:56,691 - database.upsert - INFO - Ads Insights table has been synced to database
+2019-09-13 09:58:17,465 - database.upsert - INFO - ads_insights_age_and_gender dataframe created
+2019-09-13 09:58:28,472 - root - INFO - 30797 rows inserted
+2019-09-13 09:58:28,594 - database.upsert - INFO - Ads Insights Age and Gender table has been synced to database
+2019-09-13 10:12:33,367 - database.upsert - INFO - ads_insights_region dataframe created

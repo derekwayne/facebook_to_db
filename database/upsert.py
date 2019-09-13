@@ -10,7 +10,7 @@ import pandas as pd
 import time
 import yaml
 
-from database_functions import (
+from database.database_functions import (
     facebookconnect,
     bulk_upsert,
     find,
@@ -22,7 +22,7 @@ from facebook_business.adobjects.adsinsights import AdsInsights
 from facebook_business.adobjects.adreportrun import AdReportRun
 from facebook_business.adobjects.campaign import Campaign
 from facebook_business.api import FacebookAdsApi
-from models import (
+from database.models import (
     mySQL_connect,
     AccountsTable,
     CampaignsTable,
@@ -36,7 +36,7 @@ from sqlalchemy.orm import sessionmaker
 # LOGGER
 #++++++++++++++++++++
 
-with open('config.yaml', 'r') as f:
+with open('database/config.yaml', 'r') as f:
     config = yaml.safe_load(f.read())
     logging.config.dictConfig(config)
 
@@ -46,7 +46,7 @@ logger = logging.getLogger(__name__)
 # | FACEBOOK AUTHENTICATION |
 #+++++++++++++++++++++++++++++++++++++
 
-secrets = '/home/wayned/acquire/credentials/facebook_business/client_secrets.json'
+secrets = 'database/settings/fb_client_secrets.json'
 try:
     facebookconnect(secrets_path=secrets)
     logger.info('Facebook authentication was a success')
@@ -57,7 +57,7 @@ except Exception as e:
 # ENGINE CONNECTION
 #+++++++++++++++++++++++++++++++++++++
 
-credentials = '/home/wayned/acquire/credentials/database/credentials.json'
+credentials = 'database/settings/db_secrets.json'
 try:
     engine = mySQL_connect(credentials, port='3306', db='test_schema')
     logger.info('MySQL connection was a success')
@@ -155,7 +155,7 @@ region_fields = [AdsInsights.Field.ad_id,
 
 def format_cols(df):
     """ Function to extract common columns and perform
-    some manipulations
+    some manipulations (Transform stage)
     <-- takes a pandas dataframe
     --> returns pandas dataframe
     """
@@ -189,7 +189,7 @@ def request_to_database(request, table, engine):
     engine: database engine
     """
     # read json file containing datatype info
-    with open('columns/' + table + '.json') as f:
+    with open('database/columns/' + table + '.json') as f:
         dtypes = json.load(f)
     columns = list(dtypes.keys()) # create lost of colnames
 
@@ -217,7 +217,7 @@ def request_to_database(request, table, engine):
     session = Session()
     # dataframes inserted or updated into database
     if table == 'accounts':
-        df.to_csv('data/' + table + '.csv')
+        df.to_csv('database/data/' + table + '.csv')
         bulk_upsert(session, table=AccountsTable,
                     table_name='accounts',
                     df = df, id_cols=['account_id'])
@@ -231,7 +231,7 @@ def request_to_database(request, table, engine):
                   inplace=True)
         # nans throw errors so swap with None
         df = df.where(pd.notnull(df), None)
-        df.to_csv('data/' + table + '.csv')
+        df.to_csv('database/data/' + table + '.csv')
         bulk_upsert(session, table=CampaignsTable,
                     table_name='campaigns',
                    df=df, id_cols=['campaign_id'])
@@ -245,7 +245,7 @@ def request_to_database(request, table, engine):
         campaign_ids = [i for i, in campaign_ids]
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
         df = format_cols(df)
-        df.to_csv('data/' + table + '.csv')
+        df.to_csv('database/data/' + table + '.csv')
         bulk_upsert(session, table=AdsInsightsTable,
                     table_name='ads_insights',
                     df=df, id_cols=['ad_id', 'date_start'])
@@ -256,7 +256,7 @@ def request_to_database(request, table, engine):
         campaign_ids = [i for i, in campaign_ids]
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
         df = format_cols(df)
-        df.to_csv('data/' + table + '.csv')
+        df.to_csv('database/data/' + table + '.csv')
         bulk_upsert(session, table=AdsInsightsAgeGenderTable,
                     table_name='ads_insights_age_and_gender',
                     df=df, id_cols=['ad_id', 'account_id',
@@ -269,20 +269,27 @@ def request_to_database(request, table, engine):
         campaign_ids = [i for i, in campaign_ids]
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
         df = format_cols(df)
-        df.to_csv('data/' + table + '.csv')
+        df.to_csv('database/data/' + table + '.csv')
         bulk_upsert(session, table=AdsInsightsRegionTable,
                     table_name='ads_insights_region',
                     df=df, id_cols=['ad_id', 'account_id', 'campaign_id',
                                     'date_start', 'region'])
         logger.info('Ads Insights Region table has been synced to database')
-    df.to_csv('data/' + table + '.csv')
+    df.to_csv('database/data/' + table + '.csv')
     session.close()
 ##
 #+++++++++++++++++++++++++++++++++++++
 # REQUESTS AND PUSHES
 #+++++++++++++++++++++++++++++++++++++
 ##
-accounts_list = ['act_382018871951335']
+
+def sleeper(seconds):
+    for i in xrange(seconds, 0, -1):
+        sys.stdout.write(str(i)+' ')
+        sys.stdout.flush()
+        time.sleep(1)
+
+accounts_list = ['act_55564125']
 
 for account in accounts_list:
     # ACCOUNTS TABLE
@@ -321,7 +328,7 @@ for account in accounts_list:
                         )
 
     # WAIT 10 MINUTES
-    time.sleep(600)
+    sleeper(600)
 
     # AGE AND GENDER TABLE
     agegender_request = get_request(account_id=account,
@@ -336,7 +343,7 @@ for account in accounts_list:
                         )
 
     # WAIT 10 MINUTES
-    time.sleep(600)
+    sleeper(600)
 
     # REGION TABLE
     region_request = get_request(account_id=account,

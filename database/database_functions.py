@@ -16,7 +16,7 @@ from sqlalchemy.orm import sessionmaker
 # LOGGER
 #++++++++++++++++++++
 ##
-with open('config.yaml', 'r') as f:
+with open('database/config.yaml', 'r') as f:
     config = yaml.safe_load(f.read())
     logging.config.dictConfig(config)
 

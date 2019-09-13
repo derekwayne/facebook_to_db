@@ -138,7 +138,7 @@ class AdsInsightsRegionTable(Base):
     registrations_completed = Column(Integer)
     clicks = Column(Integer)
 
-credentials_path = '/home/wayned/acquire/credentials/database/credentials.json'
+credentials_path = 'database/settings/db_secrets.json'
 engine = mySQL_connect(credentials_path, port='3306', db='test_schema')
 AccountsTable.__table__.create(bind=engine, checkfirst=True)
 CampaignsTable.__table__.create(bind=engine, checkfirst=True)
