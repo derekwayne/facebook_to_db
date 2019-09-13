@@ -9,6 +9,8 @@ note: project ready to scale to include more accounts
 * CampaignsTable
 * AdsInsightsTable
 
+## Introduction
+
 This script was written using Python 3.7.3.
 To make sure you are using the correct version to execute the script add the following lines of code to the .py file:
 ```{python}
