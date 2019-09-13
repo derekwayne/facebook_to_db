@@ -1,6 +1,10 @@
 # Ingesting Data from Facebook Marketing API into a MySQL Database using the Python SDK
+2019-09-13: project has been made into a package. Added tables:
+* AdsInsightsAgeGenderTable
+* AdsInsightsRegion Table
+note: project ready to scale to include more accounts
 
-2019-09-95: created models.py module where the database is to be engineered. Added tables:
+2019-09-05: created models.py module where the database is to be engineered. Added tables:
 * AccountsTable
 * CampaignsTable
 * AdsInsightsTable
