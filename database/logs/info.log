@@ -412,3 +412,62 @@ pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during que
 2019-09-13 09:58:28,472 - root - INFO - 30797 rows inserted
 2019-09-13 09:58:28,594 - database.upsert - INFO - Ads Insights Age and Gender table has been synced to database
 2019-09-13 10:12:33,367 - database.upsert - INFO - ads_insights_region dataframe created
+2019-09-13 11:47:12,731 - database.upsert - INFO - Facebook authentication was a success
+2019-09-13 11:47:12,732 - database.upsert - INFO - MySQL connection was a success
+2019-09-13 11:47:13,162 - database.database_functions - INFO - accounts dataframe created
+2019-09-13 11:49:50,456 - database.upsert - INFO - Facebook authentication was a success
+2019-09-13 11:49:50,457 - database.upsert - INFO - MySQL connection was a success
+2019-09-13 11:49:50,655 - database.database_functions - INFO - accounts dataframe created
+2019-09-13 11:49:51,586 - root - INFO - 1 rows inserted
+2019-09-13 11:49:51,684 - database.database_functions - INFO - Accounts table has been synced to database
+2019-09-13 11:49:54,659 - database.database_functions - INFO - campaigns dataframe created
+2019-09-13 11:49:54,977 - root - INFO - 236 rows inserted
+2019-09-13 11:49:55,069 - database.database_functions - INFO - Campaigns table has been synced to database
+2019-09-13 11:50:24,581 - database.database_functions - INFO - ads_insights dataframe created
+2019-09-13 11:52:09,581 - database.upsert - INFO - Facebook authentication was a success
+2019-09-13 11:52:09,582 - database.upsert - INFO - MySQL connection was a success
+2019-09-13 11:52:09,794 - database.database_functions - INFO - accounts dataframe created
+2019-09-13 11:52:10,533 - root - INFO - 1 rows updated
+2019-09-13 11:52:10,533 - database.database_functions - INFO - Accounts table has been synced to database
+2019-09-13 11:52:13,310 - database.database_functions - INFO - campaigns dataframe created
+2019-09-13 11:52:30,422 - root - INFO - 236 rows updated
+2019-09-13 11:52:30,423 - database.database_functions - INFO - Campaigns table has been synced to database
+2019-09-13 11:53:00,646 - database.database_functions - INFO - ads_insights dataframe created
+2019-09-13 11:53:02,570 - root - INFO - 1033 rows inserted
+2019-09-13 11:53:02,642 - database.database_functions - INFO - Ads Insights table has been synced to database
+2019-09-13 11:55:08,312 - database.upsert - INFO - Facebook authentication was a success
+2019-09-13 11:55:08,312 - database.upsert - INFO - MySQL connection was a success
+2019-09-13 11:55:08,791 - database.database_functions - INFO - accounts dataframe created
+2019-09-13 11:55:10,973 - root - INFO - 1 rows updated
+2019-09-13 11:55:10,974 - database.database_functions - INFO - Accounts table has been synced to database
+2019-09-13 11:55:13,090 - database.database_functions - INFO - campaigns dataframe created
+2019-09-13 11:55:30,235 - root - INFO - 236 rows updated
+2019-09-13 11:55:30,236 - database.database_functions - INFO - Campaigns table has been synced to database
+2019-09-13 11:55:58,940 - database.database_functions - INFO - ads_insights dataframe created
+2019-09-13 11:56:46,888 - root - INFO - 1033 rows updated
+2019-09-13 11:56:46,889 - database.database_functions - INFO - Ads Insights table has been synced to database
+2019-09-13 12:08:30,594 - database.database_functions - INFO - ads_insights_age_and_gender dataframe created
+2019-09-13 12:08:35,870 - root - INFO - 10294 rows inserted
+2019-09-13 12:08:35,975 - database.database_functions - INFO - Ads Insights Age and Gender table has been synced to database
+2019-09-13 12:19:41,966 - database.database_functions - INFO - ads_insights_region dataframe created
+2019-09-13 12:19:45,266 - root - INFO - 7563 rows inserted
+2019-09-13 12:19:45,340 - database.database_functions - INFO - Ads Insights Region table has been synced to database
+2019-09-13 21:15:32,076 - database.upsert - INFO - Facebook authentication was a success
+2019-09-13 21:15:32,076 - root - ERROR - Failed to connect to MySQL
+Traceback (most recent call last):
+  File "/home/wayned/acquire/scripts/database/acquiredatabase-git/database/upsert.py", line 65, in <module>
+    engine = mySQL_connect(credentials, port='3306', db='test_schema')
+NameError: name 'mySQL_connect' is not defined
+2019-09-13 21:16:53,537 - database.upsert - INFO - Facebook authentication was a success
+2019-09-13 21:16:53,538 - database.upsert - INFO - MySQL connection was a success
+2019-09-13 21:18:04,142 - database.upsert - INFO - Facebook authentication was a success
+2019-09-13 21:18:04,143 - database.upsert - INFO - MySQL connection was a success
+2019-09-13 21:18:05,756 - database.database_functions - INFO - accounts dataframe created
+2019-09-13 21:18:09,003 - root - INFO - 1 rows updated
+2019-09-13 21:18:09,003 - database.database_functions - INFO - Accounts table has been synced to database
+2019-09-13 21:18:19,876 - database.database_functions - INFO - campaigns dataframe created
+2019-09-13 21:22:20,572 - root - INFO - 236 rows updated
+2019-09-13 21:22:20,573 - database.database_functions - INFO - Campaigns table has been synced to database
+2019-09-13 21:22:29,235 - database.database_functions - INFO - ads_insights dataframe created
+2019-09-13 21:23:44,203 - root - INFO - 166 rows updated
+2019-09-13 21:23:44,204 - database.database_functions - INFO - Ads Insights table has been synced to database

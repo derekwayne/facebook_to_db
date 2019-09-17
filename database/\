@@ -3,14 +3,6 @@ import logging
 import pandas as pd
 import time
 import yaml
-from database.models import (
-    mySQL_connect,
-    AccountsTable,
-    CampaignsTable,
-    AdsInsightsTable,
-    AdsInsightsAgeGenderTable,
-    AdsInsightsRegionTable,
-)
 from facebook_business.adobjects.adaccount import AdAccount
 from facebook_business.adobjects.adsinsights import AdsInsights
 from facebook_business.adobjects.adreportrun import AdReportRun
@@ -65,40 +57,45 @@ def bulk_upsert(session, table, table_name,  df, id_cols):
     """
     primary_keys = ",".join(id_cols) # join PKs in string for query
     query = "SELECT " + primary_keys + " FROM " + table_name
-
     # store df of rows that exist in db and should be updated
     update_df = pd.read_sql_query(query, session.bind)
+    print("query dataframe types: ")
+    print(update_df.dtypes)
     merged_df = pd.merge(df, update_df, how='left', indicator=True)
     update_df = merged_df[merged_df['_merge']=='both'] # both exist
     update_df = update_df.drop(columns=['_merge'])
     # workaround for nans
     update_df = update_df.where(pd.notnull(update_df), None)
-
+    print("update df:")
+    print(update_df.info())
     # store df of rows that do not exist
     insert_df = merged_df[merged_df['_merge']=='left_only']
     insert_df = insert_df.drop(columns=['_merge'])
     # workaround for nans
     insert_df = insert_df.where(pd.notnull(insert_df), None)
-
+    print("insert df:")
+    print(insert_df.info())
     # after merge, the dataframes used as inputs for upserts
     # must be converted back to string objects, else
     # value error with timestamp...
     if 'date_start' in update_df:
         update_df['date_start'] = update_df['date_start'].astype(str)
         insert_df['date_start'] = insert_df['date_start'].astype(str)
+        print("after string conversion:")
+        print(insert_df.info())
 
     if not update_df.empty:
-        update_df.to_csv('staging/' + table_name + '.csv')
-        logging.info('Staging table created for {table_name}')
         num_updated = len(update_df.index)
+        print(num_updated)
         update_df = update_df.to_dict(orient="records")
         session.bulk_update_mappings(
             table,
             update_df
         )
-        logging.info('{num_updated} rows updated in {table_name}')
+        logging.info('%s rows updated', num_updated)
     if not insert_df.empty:
         num_inserted = len(insert_df.index)
+        print(num_inserted)
         num_inserted
         insert_df = insert_df.to_dict(orient="records")
         # insert any records that do not already exist in db
@@ -107,8 +104,8 @@ def bulk_upsert(session, table, table_name,  df, id_cols):
             insert_df,
             render_nulls=True
         )
-        logging.info('{num_inserted} rows inserted in {table_name}')
-    session.commit()
+        logging.info('%s rows inserted', num_inserted)
+        session.commit()
 
 #++++++++++++++++++++++++
 # DATAFRAME FUNCTIONS
@@ -171,12 +168,7 @@ def transform(df):
 #+++++++++++++++++++++++
 
 def get_request(account_id, table, params, fields):
-    """account_id: unique id for ad account in format act_<ID>
-    table: The table object found in the models module
-    params: dictionary of parameters for request
-    fields: list of fields for request
-    --> returns requested data from Facebook Marketing API
-    """
+
     my_account = AdAccount(account_id) # KOHO AD ACCOUNT
     if table == 'accounts':
         cursor = my_account.api_get(params=params,
@@ -258,6 +250,7 @@ def request_to_database(request, table, engine):
     session = Session()
     # dataframes inserted or updated into database
     if table == 'accounts':
+        df.to_csv('database/data/' + table + '.csv')
         bulk_upsert(session, table=AccountsTable,
                     table_name='accounts',
                     df = df, id_cols=['account_id'])
@@ -271,6 +264,7 @@ def request_to_database(request, table, engine):
                   inplace=True)
         # nans throw errors so swap with None
         df = df.where(pd.notnull(df), None)
+        df.to_csv('database/data/' + table + '.csv')
         bulk_upsert(session, table=CampaignsTable,
                     table_name='campaigns',
                    df=df, id_cols=['campaign_id'])
@@ -283,7 +277,7 @@ def request_to_database(request, table, engine):
         campaign_ids = session.query(CampaignsTable.campaign_id)
         campaign_ids = [i for i, in campaign_ids]
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
-        df = transform(df)
+        df = format_cols(df)
         df.to_csv('database/data/' + table + '.csv')
         bulk_upsert(session, table=AdsInsightsTable,
                     table_name='ads_insights',
@@ -294,7 +288,7 @@ def request_to_database(request, table, engine):
         campaign_ids = session.query(CampaignsTable.campaign_id)
         campaign_ids = [i for i, in campaign_ids]
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
-        df = transform(df)
+        df = format_cols(df)
         df.to_csv('database/data/' + table + '.csv')
         bulk_upsert(session, table=AdsInsightsAgeGenderTable,
                     table_name='ads_insights_age_and_gender',
@@ -307,7 +301,7 @@ def request_to_database(request, table, engine):
         campaign_ids = session.query(CampaignsTable.campaign_id)
         campaign_ids = [i for i, in campaign_ids]
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
-        df = transform(df)
+        df = format_cols(df)
         df.to_csv('database/data/' + table + '.csv')
         bulk_upsert(session, table=AdsInsightsRegionTable,
                     table_name='ads_insights_region',

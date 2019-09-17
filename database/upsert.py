@@ -7,6 +7,7 @@ import logging.config
 import numpy as np
 import os
 import pandas as pd
+import sys
 import time
 import yaml
 
@@ -15,7 +16,9 @@ from database.database_functions import (
     bulk_upsert,
     find,
     extract_col,
+    transform,
     get_request,
+    request_to_database,
 )
 from facebook_business.adobjects.adaccount import AdAccount
 from facebook_business.adobjects.adsinsights import AdsInsights
@@ -24,11 +27,11 @@ from facebook_business.adobjects.campaign import Campaign
 from facebook_business.api import FacebookAdsApi
 from database.models import (
     mySQL_connect,
-    AccountsTable,
-    CampaignsTable,
-    AdsInsightsTable,
-    AdsInsightsAgeGenderTable,
-    AdsInsightsRegionTable,
+#    AccountsTable,
+#    CampaignsTable,
+#    AdsInsightsTable,
+#    AdsInsightsAgeGenderTable,
+#    AdsInsightsRegionTable,
 )
 from sqlalchemy.orm import sessionmaker
 
@@ -85,7 +88,7 @@ campaign_fields = [Campaign.Field.id,
                    ]
 # ADS
 ads_params = {
-    'date_preset': 'last_30d',
+    'date_preset': 'last_3d',
     'time_increment': 1,
     'level': 'ad',
 }
@@ -106,7 +109,7 @@ ads_fields = [AdsInsights.Field.ad_id,
               ]
 # ADS - AGE AND GENDER
 agegender_params = {
-    'date_preset': 'last_30d',
+    'date_preset': 'last_3d',
     'time_increment': 1,
     'level': 'ad',
     'breakdowns': ['age', 'gender'],
@@ -128,7 +131,7 @@ agegender_fields = [AdsInsights.Field.ad_id,
                     ]
 # ADS - REGION
 region_params = {
-    'date_preset': 'last_30d',
+    'date_preset': 'last_3d',
     'time_increment': 1,
     'level': 'ad',
     'breakdowns': ['region'],
@@ -148,135 +151,6 @@ region_fields = [AdsInsights.Field.ad_id,
                  AdsInsights.Field.actions,
                  ]
 
-
-#++++++++++++++++++++++++++++++++++++++++
-# | UPSERTING REQUEST DATA TO DATABASE
-#++++++++++++++++++++++++++++++++++++++++
-
-def format_cols(df):
-    """ Function to extract common columns and perform
-    some manipulations (Transform stage)
-    <-- takes a pandas dataframe
-    --> returns pandas dataframe
-    """
-    # App Installs
-    df['mobile_app_installs'] = pd.to_numeric(
-        df['actions'].apply(
-            extract_col, value='mobile_app_install'
-        )
-    )
-    # Registrations
-    df['registrations_completed'] = pd.to_numeric(
-        df['actions'].apply(
-            extract_col,
-            value='app_custom_event.fb_mobile_complete_registration'
-        )
-    )
-    # Link Clicks
-    df['clicks'] = pd.to_numeric(
-        df['actions'].apply(extract_col, value='link_click')
-    )
-    df['date_start'] = pd.to_datetime(df['date_start'])
-    df = df.drop(columns=['actions'])
-    return df
-
-
-def request_to_database(request, table, engine):
-    """Take a facebook api request, load data into a
-    pandas dataframe, perform column operations for
-    specified table and upsert into mysql database.
-    table: database table name as type: str
-    engine: database engine
-    """
-    # read json file containing datatype info
-    with open('database/columns/' + table + '.json') as f:
-        dtypes = json.load(f)
-    columns = list(dtypes.keys()) # create lost of colnames
-
-    """[bug report] must treat accounts df creation separately for now
-    values of columns are scalars and not lists (since
-    there is only one observation). This requires passing
-    the index argument to DataFrame below.
-    """
-    # create temporary dataframe objects in order to
-    # use pandas library
-    if table == 'accounts':
-         df = pd.DataFrame(request,
-                           columns = columns,
-                           index=[0]
-                          ).astype(dtype=dtypes)
-         logger.info('accounts dataframe created')
-    else:
-        df = pd.DataFrame(request,
-                          columns = columns
-                          ).astype(dtype=dtypes)
-
-        logger.info('%s dataframe created', table)
-    # build session with MySQL
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    # dataframes inserted or updated into database
-    if table == 'accounts':
-        df.to_csv('database/data/' + table + '.csv')
-        bulk_upsert(session, table=AccountsTable,
-                    table_name='accounts',
-                    df = df, id_cols=['account_id'])
-        logger.info('Accounts table has been synced to database')
-
-    if table == 'campaigns':
-        # must rename these columns due to Field class attributes
-        # from parent Campaign (see facebook-business)
-        df.rename(columns={'id': 'campaign_id',
-                           'name': 'campaign_name'},
-                  inplace=True)
-        # nans throw errors so swap with None
-        df = df.where(pd.notnull(df), None)
-        df.to_csv('database/data/' + table + '.csv')
-        bulk_upsert(session, table=CampaignsTable,
-                    table_name='campaigns',
-                   df=df, id_cols=['campaign_id'])
-        logger.info('Campaigns table has been synced to database')
-
-    if table == 'ads_insights':
-        # campaign id may refer to a deleted campaign which
-        # is not contained in the Campaigns table of the database
-        # we keep only those ids which are;
-        campaign_ids = session.query(CampaignsTable.campaign_id)
-        campaign_ids = [i for i, in campaign_ids]
-        df = df.loc[df['campaign_id'].isin(campaign_ids), :]
-        df = format_cols(df)
-        df.to_csv('database/data/' + table + '.csv')
-        bulk_upsert(session, table=AdsInsightsTable,
-                    table_name='ads_insights',
-                    df=df, id_cols=['ad_id', 'date_start'])
-        logger.info('Ads Insights table has been synced to database')
-
-    if table == 'ads_insights_age_and_gender':
-        campaign_ids = session.query(CampaignsTable.campaign_id)
-        campaign_ids = [i for i, in campaign_ids]
-        df = df.loc[df['campaign_id'].isin(campaign_ids), :]
-        df = format_cols(df)
-        df.to_csv('database/data/' + table + '.csv')
-        bulk_upsert(session, table=AdsInsightsAgeGenderTable,
-                    table_name='ads_insights_age_and_gender',
-                    df=df, id_cols=['ad_id', 'account_id',
-                                    'campaign_id', 'date_start',
-                                    'age', 'gender'])
-        logger.info('Ads Insights Age and Gender table has been synced to database')
-
-    if table == 'ads_insights_region':
-        campaign_ids = session.query(CampaignsTable.campaign_id)
-        campaign_ids = [i for i, in campaign_ids]
-        df = df.loc[df['campaign_id'].isin(campaign_ids), :]
-        df = format_cols(df)
-        df.to_csv('database/data/' + table + '.csv')
-        bulk_upsert(session, table=AdsInsightsRegionTable,
-                    table_name='ads_insights_region',
-                    df=df, id_cols=['ad_id', 'account_id', 'campaign_id',
-                                    'date_start', 'region'])
-        logger.info('Ads Insights Region table has been synced to database')
-    df.to_csv('database/data/' + table + '.csv')
-    session.close()
 ##
 #+++++++++++++++++++++++++++++++++++++
 # REQUESTS AND PUSHES
@@ -284,12 +158,12 @@ def request_to_database(request, table, engine):
 ##
 
 def sleeper(seconds):
-    for i in xrange(seconds, 0, -1):
+    for i in range(seconds, 0, -1):
         sys.stdout.write(str(i)+' ')
         sys.stdout.flush()
         time.sleep(1)
 
-accounts_list = ['act_55564125']
+accounts_list = ['act_339963273316912']
 
 for account in accounts_list:
     # ACCOUNTS TABLE
