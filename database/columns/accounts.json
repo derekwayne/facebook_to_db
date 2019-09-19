@@ -1,6 +1,8 @@
 {
   "id": "object",
   "account_id": "int64",
+  "name": "object",
   "account_status": "category",
+  "currency": "category",
   "amount_spent": "float64"
 }

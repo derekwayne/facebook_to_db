@@ -1,0 +1,11 @@
+{
+  "id": "int64",
+  "name": "object",
+  "account_id": "int64",
+  "campaign_id": "int64",
+  "created_time": "object",
+  "daily_budget": "float64",
+  "status": "category",
+  "optimization_goal": "category",
+  "updated_time": "object"
+}

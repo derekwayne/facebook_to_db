@@ -1,15 +1,18 @@
 {
   "ad_id": "int64",
-  "campaign_id": "int64",
-  "date_start": "object",
-  "ad_name": "object",
-  "campaign_name": "object",
   "account_id": "int64",
-  "frequency": "float64",
-  "cpc": "float64",
-  "cpm": "float64",
+  "campaign_id": "int64",
+  "adset_id": "int64",
+  "date_start": "object",
+  "account_name": "object",
+  "campaign_name": "object",
+  "adset_name": "object",
+  "ad_name": "object",
   "spend": "float64",
+  "account_currency": "category",
+  "frequency": "float64",
+  "reach": "int64",
   "impressions": "int64",
-  "ctr": "float64",
-  "actions": "object"
+  "actions": "object",
+  "action_values": "object"
 }

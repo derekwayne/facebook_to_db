@@ -7,6 +7,7 @@ from database.models import (
     mySQL_connect,
     AccountsTable,
     CampaignsTable,
+    AdSetsTable,
     AdsInsightsTable,
     AdsInsightsAgeGenderTable,
     AdsInsightsRegionTable,
@@ -15,6 +16,7 @@ from facebook_business.adobjects.adaccount import AdAccount
 from facebook_business.adobjects.adsinsights import AdsInsights
 from facebook_business.adobjects.adreportrun import AdReportRun
 from facebook_business.adobjects.campaign import Campaign
+from facebook_business.adobjects.adset import AdSet
 from facebook_business.api import FacebookAdsApi
 from sqlalchemy.dialects.mysql import insert
 from sqlalchemy.orm import sessionmaker
@@ -66,6 +68,9 @@ def bulk_upsert(session, table, table_name,  df, id_cols):
     primary_keys = ",".join(id_cols) # join PKs in string for query
     query = "SELECT " + primary_keys + " FROM " + table_name
 
+    if 'date_start' in df:
+        df['date_start'] = pd.to_datetime(df['date_start'])
+
     # store df of rows that exist in db and should be updated
     update_df = pd.read_sql_query(query, session.bind)
     merged_df = pd.merge(df, update_df, how='left', indicator=True)
@@ -88,16 +93,16 @@ def bulk_upsert(session, table, table_name,  df, id_cols):
         insert_df['date_start'] = insert_df['date_start'].astype(str)
 
     if not update_df.empty:
-        update_df.to_csv('staging/' + table_name + '.csv')
-        logging.info('Staging table created for {table_name}')
+        update_df.to_csv('database/staging/' + table_name + '_update.csv')
         num_updated = len(update_df.index)
         update_df = update_df.to_dict(orient="records")
         session.bulk_update_mappings(
             table,
             update_df
         )
-        logging.info('{num_updated} rows updated in {table_name}')
+        logger.info(f'{num_updated} rows updated in {table_name}')
     if not insert_df.empty:
+        insert_df.to_csv('database/staging/' + table_name + '_insert.csv')
         num_inserted = len(insert_df.index)
         num_inserted
         insert_df = insert_df.to_dict(orient="records")
@@ -107,7 +112,7 @@ def bulk_upsert(session, table, table_name,  df, id_cols):
             insert_df,
             render_nulls=True
         )
-        logging.info('{num_inserted} rows inserted in {table_name}')
+        logger.info(f'{num_inserted} rows inserted in {table_name}')
     session.commit()
 
 #++++++++++++++++++++++++
@@ -125,19 +130,42 @@ def find(lst, key, value):
     # value not found
     return -1
 
-def extract_col(row, value):
+def extract_col(row, action_type, attr_window='value'):
     """row: a row from a pandas df
-    value: a type of action  -- eg: mobile app installs
+    action_type: a type of action  -- eg: mobile app installs
+    attr_window: the attribution window to search for
     returns: data associated with key, value pair
     """
     if type(row) != list:
         return 0
     else:
-        index = find(lst=row, key='action_type', value=value)
+        index = find(lst=row, key='action_type', value=action_type)
         # index will be -1 if function cannot find value
         if index == -1:
             return 0
-        return row[index]['value']
+        try:
+            return row[index][attr_window]
+        except KeyError:
+            return 0
+
+def attribution_windows(df, nested_col, action_type, col):
+    """(pandas df, str, str, str) -> pandas df
+    Create separate columns for each attribution window
+    nested_col is the name of the data frame column
+    that contains all the data we wish to pull.
+    col is the base name of column (e.g. purchases)
+    """
+    windows = ['1d_view', '7d_view', '28d_view',
+               '1d_click', '7d_click', '28d_click']
+    for win in windows:
+        new_colname = col + '_' + win
+        df[new_colname] = pd.to_numeric(
+            df[nested_col].apply(
+                extract_col, action_type=action_type,
+                attr_window=win
+            )
+        )
+    return df
 
 def transform(df):
     """ Function to extract common columns and perform
@@ -145,25 +173,46 @@ def transform(df):
     <-- takes a pandas dataframe
     --> returns pandas dataframe
     """
+    # Landing Page View
+    df = attribution_windows(df, 'actions', 'landing_page_view', 'landing_page_view')
+    # Link Click
+    df = attribution_windows(df, 'actions', 'link_click', 'link_click')
+    # Posts
+    df = attribution_windows(df, 'actions', 'post', 'post')
+    # Page Engagement
+    df = attribution_windows(df, 'actions', 'page_engagement', 'page_engagement')
+    # Post Engagement
+    df = attribution_windows(df, 'actions', 'post_engagement', 'post_engagement')
+    # Add to cart
+    df = attribution_windows(df, 'actions', 'omni_add_to_cart', 'add_to_cart')
+    # Initiated Checkout
+    df = attribution_windows(df, 'actions', 'omni_initiated_checkout', 'checkout')
+    # Activate App
+    df = attribution_windows(df, 'actions', 'omni_activate_app', 'app_starts')
+    # App registrations
+    df = attribution_windows(df, 'actions', 'omni_complete_registration', 'complete_registrations')
     # App Installs
-    df['mobile_app_installs'] = pd.to_numeric(
-        df['actions'].apply(
-            extract_col, value='mobile_app_install'
-        )
-    )
-    # Registrations
-    df['registrations_completed'] = pd.to_numeric(
-        df['actions'].apply(
-            extract_col,
-            value='app_custom_event.fb_mobile_complete_registration'
-        )
-    )
-    # Link Clicks
-    df['clicks'] = pd.to_numeric(
-        df['actions'].apply(extract_col, value='link_click')
-    )
-    df['date_start'] = pd.to_datetime(df['date_start'])
-    df = df.drop(columns=['actions'])
+    df = attribution_windows(df, 'actions', 'omni_app_install', 'app_install')
+    # Purchase
+    df = attribution_windows(df, 'actions', 'omni_purchase', 'purchase')
+
+    # Renter Complete Registration
+    df = attribution_windows(df, 'actions', 'offsite_conversion.custom.264800584268286', 'renter_complete_registration')
+    # Renter Booking Sent
+    df = attribution_windows(df, 'actions', 'offsite_conversion.custom.155619705306328', 'renter_booking_sent')
+    # Owner Listed
+    df = attribution_windows(df, 'actions', 'offsite_conversion.custom.2038839149667048', 'owner_listed')
+    # Owner Complete Registration
+    df = attribution_windows(df, 'actions', 'offsite_conversion.custom.1816163992024268', 'owner_complete_registration')
+
+
+    # CONVERSION VALUES
+
+    # Purchase
+    df = attribution_windows(df, 'action_values', 'omni_purchase', 'purchase_value')
+
+    # drop actions column
+    df = df.drop(columns=['actions', 'action_values'])
     return df
 
 #+++++++++++++++++++++++
@@ -187,6 +236,10 @@ def get_request(account_id, table, params, fields):
                                           fields=fields)
         request = [campaign for campaign in cursor]
         return  request
+    if table == 'adsets':
+        request = my_account.get_ad_sets(params=params,
+                                        fields=fields)
+        return request
     if table == 'ads_insights':
         cursor = my_account.get_insights_async(params=params,
                                                fields=fields)
@@ -246,22 +299,21 @@ def request_to_database(request, table, engine):
                            columns = columns,
                            index=[0]
                           ).astype(dtype=dtypes)
-         logger.info('accounts dataframe created')
     else:
         df = pd.DataFrame(request,
                           columns = columns
                           ).astype(dtype=dtypes)
 
-        logger.info('%s dataframe created', table)
     # build session with MySQL
     Session = sessionmaker(bind=engine)
     session = Session()
     # dataframes inserted or updated into database
     if table == 'accounts':
+        df.rename(columns={'name': 'account_name'},
+                  inplace=True)
         bulk_upsert(session, table=AccountsTable,
                     table_name='accounts',
                     df = df, id_cols=['account_id'])
-        logger.info('Accounts table has been synced to database')
 
     if table == 'campaigns':
         # must rename these columns due to Field class attributes
@@ -273,8 +325,17 @@ def request_to_database(request, table, engine):
         df = df.where(pd.notnull(df), None)
         bulk_upsert(session, table=CampaignsTable,
                     table_name='campaigns',
-                   df=df, id_cols=['campaign_id'])
-        logger.info('Campaigns table has been synced to database')
+                   df=df, id_cols=['account_id', 'campaign_id'])
+
+    if table == 'adsets':
+        df.rename(columns={'id': 'adset_id',
+                           'name': 'adset_name'},
+                  inplace=True)
+        df = df.where(pd.notnull(df), None)
+        bulk_upsert(session, table=AdSetsTable,
+                    table_name='adsets',
+                    df=df, id_cols=['adset_id', 'account_id',
+                                    'campaign_id'])
 
     if table == 'ads_insights':
         # campaign id may refer to a deleted campaign which
@@ -282,38 +343,94 @@ def request_to_database(request, table, engine):
         # we keep only those ids which are;
         campaign_ids = session.query(CampaignsTable.campaign_id)
         campaign_ids = [i for i, in campaign_ids]
+        # this also happens with deleted adsets
+        adset_ids = session.query(AdSetsTable.adset_id)
+        adset_ids = [i for i, in adset_ids]
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
+        n = len(df.loc[df['adset_id'].isin(adset_ids)==False, :].index)
+        if n > 0:
+            logging.warning(f"{n} rows will not be synced - fk constraint")
+            df.to_csv("database/staging/ignored_ads.csv")
+        df = df.loc[df['adset_id'].isin(adset_ids), :]
         df = transform(df)
-        df.to_csv('database/data/' + table + '.csv')
+        df.to_csv("testing.csv")
         bulk_upsert(session, table=AdsInsightsTable,
                     table_name='ads_insights',
-                    df=df, id_cols=['ad_id', 'date_start'])
-        logger.info('Ads Insights table has been synced to database')
+                    df=df, id_cols=['ad_id', 'account_id',
+                                    'campaign_id', 'adset_id',
+                                    'date_start'])
 
     if table == 'ads_insights_age_and_gender':
         campaign_ids = session.query(CampaignsTable.campaign_id)
         campaign_ids = [i for i, in campaign_ids]
+        adset_ids = session.query(AdSetsTable.adset_id)
+        adset_ids = [i for i, in adset_ids]
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
+        df = df.loc[df['adset_id'].isin(adset_ids), :]
         df = transform(df)
-        df.to_csv('database/data/' + table + '.csv')
         bulk_upsert(session, table=AdsInsightsAgeGenderTable,
                     table_name='ads_insights_age_and_gender',
                     df=df, id_cols=['ad_id', 'account_id',
-                                    'campaign_id', 'date_start',
-                                    'age', 'gender'])
-        logger.info('Ads Insights Age and Gender table has been synced to database')
+                                    'campaign_id', 'adset_id',
+                                    'date_start', 'age', 'gender'])
 
     if table == 'ads_insights_region':
         campaign_ids = session.query(CampaignsTable.campaign_id)
         campaign_ids = [i for i, in campaign_ids]
+        adset_ids = session.query(AdSetsTable.adset_id)
+        adset_ids = [i for i, in adset_ids]
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
+        df = df.loc[df['adset_id'].isin(adset_ids), :]
         df = transform(df)
-        df.to_csv('database/data/' + table + '.csv')
         bulk_upsert(session, table=AdsInsightsRegionTable,
                     table_name='ads_insights_region',
                     df=df, id_cols=['ad_id', 'account_id', 'campaign_id',
-                                    'date_start', 'region'])
-        logger.info('Ads Insights Region table has been synced to database')
-    df.to_csv('database/data/' + table + '.csv')
+                                    'adset_id', 'date_start', 'region'])
     session.close()
+
+
+
+def batch_dates(start, end, intv):
+    """start and end define a date range in string format.
+    Returns a list of dictionaries that can be used as parameters
+    for a Facebook API request; breaking apart large date ranges
+    into smaller ranges.
+    """
+    from datetime import datetime
+    from datetime import timedelta
+    def date_range(start, end, intv):
+        """Take a date range and intv, return (intv) number of
+        contiguous sub date ranges.
+        e.g.: date_range('2019-09-17', '2019-10-01', 3)
+        -> ['2019-09-17', '2019-09-21', '2019-09-26', '2019-10-01']
+        """
+        start = datetime.strptime(start, "%Y-%m-%d")
+        end = datetime.strptime(end, "%Y-%m-%d")
+        diff = (end - start) / intv
+        for i in range(intv):
+            yield (start+diff*i).strftime("%Y-%m-%d")
+        yield end.strftime("%Y-%m-%d")
+    new_ranges = list(date_range(start, end, intv)) # string formatted
+    # date formatted
+    new_dates = [datetime.strptime(x, "%Y-%m-%d") for x in new_ranges]
+    # list of number of days differences between
+    date_diffs = pd.Series(new_dates).diff().dt.days.iloc[1:].tolist()
+    date_params = [] # list of dictionaries init
+    for i in range(len(new_dates)-1):
+        # on last date we want the range to include 'end' from args
+        if i == (len(new_dates)-2):
+            days = date_diffs[i]
+        # otherwise less one day to prevent overlapping
+        else:
+            days = date_diffs[i]-1
+        date_param = {
+            'since': new_ranges[i],
+            'until': datetime.strftime(
+                new_dates[i] + timedelta(days=days),
+                "%Y-%m-%d"
+            )
+        }
+        date_params.append(date_param)
+    return date_params
+
 
