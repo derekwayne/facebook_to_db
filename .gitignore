@@ -1,3 +1,4 @@
 *.csv
 database/settings/db_secrets.json
 database/settings/fb_client_secrets.json
+database/settings/client_dictionary.json

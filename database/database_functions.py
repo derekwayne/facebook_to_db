@@ -349,7 +349,7 @@ def request_to_database(request, table, engine):
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
         n = len(df.loc[df['adset_id'].isin(adset_ids)==False, :].index)
         if n > 0:
-            logging.warning(f"{n} rows will not be synced - fk constraint")
+            logger.warning(f"{n} rows will not be synced - fk constraint")
             df.to_csv("database/staging/ignored_ads.csv")
         df = df.loc[df['adset_id'].isin(adset_ids), :]
         df = transform(df)
@@ -381,6 +381,16 @@ def request_to_database(request, table, engine):
         adset_ids = [i for i, in adset_ids]
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
         df = df.loc[df['adset_id'].isin(adset_ids), :]
+        # have experienced duplicates in primary keys in this table
+        # I will log them into a csv to keep track which were dropped
+        duplicates = df[df.duplicated(subset=['ad_id', 'account_id', 'campaign_id', 'adset_id', 'date_start', 'region'],
+                                   keep='first')]
+        n = len(duplicates.index)
+        if n > 0:
+            logger.warning('{n} duplicate primary keys encountered: written to staging/duplicates.csv')
+            duplicates.to_csv('database/staging/duplciates.csv')
+            df.drop_duplicates(subset=['ad_id', 'account_id', 'campaign_id', 'adset_id', 'date_start', 'region'],
+                               keep = 'first', inplace = True)
         df = transform(df)
         bulk_upsert(session, table=AdsInsightsRegionTable,
                     table_name='ads_insights_region',

@@ -191,7 +191,8 @@ def sleeper(seconds):
         sys.stdout.flush()
         time.sleep(1)
 # nicosurge, alinker us, alinker ca, inabuggy, rvezy, nobilified
-accounts_list = ['act_10911447']
+accounts_list = []
+
 
 for account in accounts_list:
     logger.info(f'Beginning to sync {account}')
