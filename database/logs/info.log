@@ -5233,3 +5233,55 @@ facebook_business.exceptions.FacebookRequestError:
 2019-09-23 14:23:02,013 - root - INFO - 273 - batching from date range: 2019-09-04 - 2019-09-09
 2019-09-23 14:23:13,041 - database.database_functions - INFO - 104 - 1155 rows updated in ads_insights_age_and_gender
 2019-09-23 14:23:13,063 - root - INFO - 284 - batch success; 3 out of 5
+2019-09-23 14:48:30,029 - database.upsert - INFO - 54 - Facebook authentication was a success
+2019-09-23 14:48:30,029 - database.upsert - INFO - 65 - MySQL connection was a success
+2019-09-23 14:48:30,029 - database.upsert - INFO - 215 - Beginning to sync lunata
+2019-09-23 14:48:32,148 - database.database_functions - INFO - 116 - 1 rows inserted in accounts
+2019-09-23 14:48:32,333 - root - INFO - 228 - Accounts Table successfully synced to database
+2019-09-23 14:48:35,328 - database.database_functions - INFO - 116 - 107 rows inserted in campaigns
+2019-09-23 14:48:35,479 - root - INFO - 241 - Campaigns Table successfully synced to database
+2019-09-23 14:48:44,987 - database.database_functions - INFO - 116 - 348 rows inserted in adsets
+2019-09-23 14:48:45,144 - root - INFO - 255 - Ad Sets Table successfully synced to database
+2019-09-23 15:02:47,371 - database.upsert - INFO - 54 - Facebook authentication was a success
+2019-09-23 15:02:47,372 - database.upsert - INFO - 65 - MySQL connection was a success
+2019-09-23 15:02:47,372 - database.upsert - INFO - 219 - Beginning to sync lunata
+2019-09-23 15:02:48,900 - database.database_functions - INFO - 104 - 1 rows updated in accounts
+2019-09-23 15:02:49,036 - root - INFO - 232 - Accounts Table successfully synced to database
+2019-09-23 15:03:04,902 - database.database_functions - INFO - 104 - 107 rows updated in campaigns
+2019-09-23 15:03:05,025 - root - INFO - 245 - Campaigns Table successfully synced to database
+2019-09-23 15:03:39,103 - database.database_functions - INFO - 104 - 186 rows updated in adsets
+2019-09-23 15:03:39,324 - database.database_functions - INFO - 116 - 27 rows inserted in adsets
+2019-09-23 15:03:39,448 - root - INFO - 259 - Ad Sets Table successfully synced to database
+2019-09-23 15:04:39,531 - root - INFO - 276 - batching from date range: 2019-08-24 - 2019-08-28
+2019-09-23 15:04:47,645 - database.database_functions - INFO - 116 - 123 rows inserted in ads_insights
+2019-09-23 15:04:47,772 - root - INFO - 286 - batch success; 1 out of 5
+2019-09-23 15:04:47,772 - root - INFO - 276 - batching from date range: 2019-08-29 - 2019-09-03
+2019-09-23 15:04:57,460 - database.database_functions - INFO - 116 - 314 rows inserted in ads_insights
+2019-09-23 15:04:57,617 - root - INFO - 286 - batch success; 2 out of 5
+2019-09-23 15:04:57,617 - root - INFO - 276 - batching from date range: 2019-09-04 - 2019-09-09
+2019-09-23 15:05:07,458 - database.database_functions - INFO - 116 - 226 rows inserted in ads_insights
+2019-09-23 15:05:07,586 - root - INFO - 286 - batch success; 3 out of 5
+2019-09-23 15:05:07,587 - root - INFO - 276 - batching from date range: 2019-09-10 - 2019-09-15
+2019-09-23 15:05:15,935 - database.database_functions - INFO - 116 - 201 rows inserted in ads_insights
+2019-09-23 15:05:16,080 - root - INFO - 286 - batch success; 4 out of 5
+2019-09-23 15:05:16,081 - root - INFO - 276 - batching from date range: 2019-09-16 - 2019-09-22
+2019-09-23 15:05:24,256 - database.database_functions - INFO - 116 - 181 rows inserted in ads_insights
+2019-09-23 15:05:24,414 - root - INFO - 286 - batch success; 5 out of 5
+2019-09-23 15:05:24,414 - root - INFO - 287 - Ads Insights Table successfully synced to database
+2019-09-23 15:05:24,415 - root - INFO - 294 - batching from date range: 2019-08-24 - 2019-08-28
+2019-09-23 15:05:34,539 - database.database_functions - INFO - 116 - 479 rows inserted in ads_insights_age_and_gender
+2019-09-23 15:05:34,687 - root - INFO - 304 - batch success; 1 out of 5
+2019-09-23 15:06:34,766 - root - INFO - 294 - batching from date range: 2019-08-29 - 2019-09-03
+2019-09-23 15:06:54,309 - database.database_functions - INFO - 116 - 1398 rows inserted in ads_insights_age_and_gender
+2019-09-23 15:06:54,479 - root - INFO - 304 - batch success; 2 out of 5
+2019-09-23 15:07:54,558 - root - INFO - 294 - batching from date range: 2019-09-04 - 2019-09-09
+2019-09-23 15:08:12,368 - database.database_functions - INFO - 116 - 910 rows inserted in ads_insights_age_and_gender
+2019-09-23 15:08:12,497 - root - INFO - 304 - batch success; 3 out of 5
+2019-09-23 15:09:12,570 - root - INFO - 294 - batching from date range: 2019-09-10 - 2019-09-15
+2019-09-23 15:09:25,928 - database.database_functions - INFO - 116 - 901 rows inserted in ads_insights_age_and_gender
+2019-09-23 15:09:26,056 - root - INFO - 304 - batch success; 4 out of 5
+2019-09-23 15:10:26,127 - root - INFO - 294 - batching from date range: 2019-09-16 - 2019-09-22
+2019-09-23 15:10:44,004 - database.database_functions - INFO - 116 - 951 rows inserted in ads_insights_age_and_gender
+2019-09-23 15:10:44,162 - root - INFO - 304 - batch success; 5 out of 5
+2019-09-23 15:11:44,204 - root - INFO - 307 - Ads-Age and Gender Table successfully synced to database
+2019-09-23 15:21:44,971 - root - INFO - 323 - batching from date range: 2019-08-24 - 2019-08-28

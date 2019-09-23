@@ -79,7 +79,11 @@ account_fields = [AdAccount.Field.account_id,
                   AdAccount.Field.amount_spent,
                   ]
 # CAMPAIGN
-campaign_params = {'level': 'campaign',}
+campaign_params = {'level': 'campaign',
+                   'filtering': [{'field': 'campaign.effective_status',
+                                 'operator': 'IN',
+                                 'value': ['ACTIVE', 'PAUSED',
+                                           'ARCHIVED', 'DELETED']}]}
 campaign_fields = [Campaign.Field.id,
                    Campaign.Field.name,
                    Campaign.Field.account_id,
@@ -88,7 +92,11 @@ campaign_fields = [Campaign.Field.id,
                    Campaign.Field.daily_budget,
                    ]
 # AD SETS
-adset_params = {'level': 'adset'}
+adset_params = {'level': 'adset',
+                'filtering': [{'field': 'adset.effective_status',
+                               'operator': 'IN',
+                               'value': ['ACTIVE', 'PAUSED',
+                                         'ARCHIVED', 'DELETED']}]}
 adset_fields = [AdSet.Field.id,
           AdSet.Field.name,
           AdSet.Field.account_id,
@@ -187,6 +195,8 @@ region_fields = [AdsInsights.Field.ad_id,
 ##
 
 def sleeper(seconds):
+    """Puts the script to sleep for defined seconds
+    """
     for i in range(seconds, 0, -1):
         sys.stdout.write(str(i)+' ')
         sys.stdout.flush()
@@ -199,56 +209,67 @@ with open('database/settings/client_dictionary.json', 'r') as f:
 # store a list of accounts that were synced and not synced properly
 synced = []
 not_synced = []
-for account in clients:
-    attempts = 3
+#================================/////////////
+#  BEGIN ITERATING OVER ACCOUNTS
+#===============================/////////////
+for account in clients: # account refers to an account name
+    attempts = 3 # number of attempts while encountering request errors
     while attempts > 0:
         try:
             logger.info(f'Beginning to sync {account}')
+            #==================
             # ACCOUNTS TABLE
+            #==================
             account_request = get_request(account_id=clients[account],
                                           table='accounts',
                                           params=account_params,
                                           fields=account_fields
                                           )
-        
             request_to_database(request=account_request,
                                 table='accounts',
                                 engine=engine
                                 )
             logging.info("Accounts Table successfully synced to database")
+            #===================
             # CAMPAIGNS TABLE
+            #===================
             campaign_request = get_request(account_id=clients[account],
                                            table='campaigns',
                                            params=campaign_params,
                                            fields=campaign_fields
                                            )
-        
             request_to_database(request=campaign_request,
                                 table='campaigns',
                                 engine=engine
                                 )
             logging.info("Campaigns Table successfully synced to database")
-        
+            #================
             # AD SETS TABLE
+            #================
             adsets_request = get_request(account_id=clients[account],
                                          table='adsets',
                                          params=adset_params,
                                          fields=adset_fields
                                          )
-        
+
             request_to_database(request=adsets_request,
                                 table='adsets',
                                 engine=engine
                                 )
             logging.info("Ad Sets Table successfully synced to database")
-            sleeper(60)
-        
+            sleeper(60) # WAIT 1 MINUTE
+            #=====================
             # ADS INSIGHTS TABLE
+            #=====================
             # define an interval for batching with smaller date ranges:
             intv = 5
-            end = datetime.strftime(datetime.now() - timedelta(days=1), "%Y-%m-%d")
-            start = datetime.strftime(datetime.now() - timedelta(days=30), "%Y-%m-%d")
+            end = datetime.strftime(datetime.now() - \
+                                    timedelta(days=1), "%Y-%m-%d")
+            start = datetime.strftime(datetime.now() - \
+                                      timedelta(days=30), "%Y-%m-%d")
+            # store the list of dictionaries defining date params
             time_ranges = batch_dates(start, end, intv)
+
             for i in range(intv):
                 time_range = time_ranges[i]
                 ads_params['time_range'] = time_range
@@ -258,15 +279,15 @@ for account in clients:
                                           params=ads_params,
                                           fields=ads_fields
                                           )
-        
                 request_to_database(request=ads_request,
                                     table='ads_insights',
                                     engine=engine
                                     )
                 logging.info(f"batch success; {i+1} out of {intv}")
             logging.info("Ads Insights Table successfully synced to database")
-        
+            #======================
             # AGE AND GENDER TABLE
+            #======================
             for i in range(intv):
                 time_range = time_ranges[i]
                 agegender_params['time_range'] = time_range
@@ -276,7 +297,6 @@ for account in clients:
                                                 params=agegender_params,
                                                 fields=agegender_fields
                                                 )
-        
                 request_to_database(request=agegender_request,
                                     table='ads_insights_age_and_gender',
                                     engine=engine
@@ -285,13 +305,17 @@ for account in clients:
                 # WAIT 1 MINUTE
                 sleeper(60)
             logging.info("Ads-Age and Gender Table successfully synced to database")
-        
-            # WAIT 10 MINUTES
+
+            # WAIT 10 MINUTES BETWEEN THESE TWO LARGE TABLES
             sleeper(600)
-        
+            #==================
             # REGION TABLE
+            #==================
+            # This table is often the biggest batch of api requests and so
+            # has a greater frequency of errors. Most often - too many calls
+            # from a single ad account.
             for i in range(intv):
-                tries = 1
+                tries = 1 # gives this table 1 retry after a half hour wait
                 while tries > 0:
                     try:
                         time_range = time_ranges[i]
@@ -302,7 +326,6 @@ for account in clients:
                                                  params=region_params,
                                                  fields=region_fields
                                                  )
-            
                         request_to_database(request=region_request,
                                             table='ads_insights_region',
                                             engine=engine
@@ -317,27 +340,28 @@ for account in clients:
                         continue
                     break
             logging.info("Ads-Region Table successfully synced to database")
-        
+            #===================
             # END OF REQUESTS 
+            #===================
             logger.info(f'Completed syncing {account} to database')
             synced.append(account)
+        # Catching request errors from any other table and retrying the entire account
+        # 2 more times...
         except FacebookRequestError as e:
             logger.exception(f'Encountered an error - retrys remaining: {attempts - 1}')
             attempts -= 1
             if attempts == 0:
                 logger.warning(f'not able to finish syncing {account}')
-                not_synced.append(account)
+                not_synced.append(account) # storing accounts that were not successfull
             continue
         break
 # return all accounts not syned properly
-not_synced_string = ",".join(not_synced)
 synced_string = ",".join(synced)
+not_synced_string = ",".join(not_synced)
 synced_message = "The following accounts were synced: "
 not_synced_message = "The following accounts were not properly synced: "
-if len(not_synced) > 0:
+if len(not_synced) > 0: # if at least 1 account not synced properly - display
     logging.warning(f'{not_synced_message} {not_synced_string}')
 logging.info(f'{synced_message} {synced_string}')
-
-
 
 

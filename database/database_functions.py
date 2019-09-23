@@ -354,7 +354,6 @@ def request_to_database(request, table, engine):
             df.to_csv("database/staging/ignored_ads.csv")
         df = df.loc[df['adset_id'].isin(adset_ids), :]
         df = transform(df)
-        df.to_csv("testing.csv")
         bulk_upsert(session, table=AdsInsightsTable,
                     table_name='ads_insights',
                     df=df, id_cols=['ad_id', 'account_id',
