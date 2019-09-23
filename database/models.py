@@ -13,6 +13,7 @@ from sqlalchemy import (
     ForeignKey,
     DateTime,
     BigInteger,
+    Unicode,
 )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, backref
@@ -304,7 +305,7 @@ class AdsInsightsRegionTable(Base):
     campaign_id = Column(BigInteger)
     adset_id = Column(BigInteger)
     date_start = Column(DateTime)
-    region = Column(String(45))
+    region = Column(Unicode(45, collation='utf8_general_ci'))
     frequency = Column(Float)
     reach = Column(Integer)
     link_click_1d_view = Column(Integer)

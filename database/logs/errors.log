@@ -1,41 +1,157 @@
-2019-09-07 12:11:57,473 - root - ERROR - Failed to connect to MySQL
+2019-09-23 00:06:04,617 - database.upsert - ERROR - 314 - Encountered an error - waiting 30 minutes...
 Traceback (most recent call last):
-  File "optimized.py", line 54, in <module>
-    engine = mySQL_connect(credentials_path, port='3306', db='test_schema')
-NameError: name 'credentials_path' is not defined
-2019-09-07 12:12:53,672 - root - ERROR - Failed to connect to MySQL
-Traceback (most recent call last):
-  File "optimized.py", line 54, in <module>
-    engine = mySQL_connect(credentials, port='3306', db='test_schema')
-NameError: name 'credentials' is not defined
-2019-09-10 20:49:49,908 - sqlalchemy.pool.impl.QueuePool - ERROR - Exception during reset or similar
-Traceback (most recent call last):
-  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/pymysql/connections.py", line 691, in _read_bytes
-    data = self._rfile.read(num_bytes)
-  File "/home/wayned/anaconda3/lib/python3.7/socket.py", line 589, in readinto
-    return self._sock.recv_into(b)
-TimeoutError: [Errno 110] Connection timed out
+  File "/home/ubuntu/facebook_to_db/database/upsert.py", line 308, in <module>
+    engine=engine
+  File "/home/ubuntu/facebook_to_db/database/database_functions.py", line 305, in request_to_database
+    columns = columns
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/pandas/core/frame.py", line 445, in __init__
+    data = list(data)
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 775, in __next__
+    if not self._queue and not self.load_next_page():
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 830, in load_next_page
+    params=self.params,
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 336, in call
+    raise fb_response.error()
+facebook_business.exceptions.FacebookRequestError: 
 
-During handling of the above exception, another exception occurred:
+  Message: Call was not successful
+  Method:  GET
+  Path:    https://graph.facebook.com/v4.0/2455304481366096/insights?access_token=EAAHGoaxg8r8BAFgZCtM95YQNjXPiRkW5us1klrd6mda1KzO7ZCc8tzcidHziZCiWTQ4jrZCHCLtOk0Hx5ZBNcqCAfEQvcZBykAso3c3NEjuUIHXCdkKDetPIvhZB516JkeynehxWhH3fFPKfNiwxFjnACcdSzJLmbgQLHebZCvNEzFyyxHLZAsadK&limit=1000&after=Njk5OQZDZD
+  Params:  {'limit': 1000}
 
+  Status:  400
+  Response:
+    {
+      "error": {
+        "message": "(#80000) There have been too many calls from this ad-account. Wait a bit and try again. For more info, please refer to https://developers.facebook.com/docs/graph-api/overview/rate-limiting.",
+        "type": "OAuthException",
+        "code": 80000,
+        "error_subcode": 2446079,
+        "fbtrace_id": "AHbk8voIYI4PH4vjKo_BpCA"
+      }
+    }
+
+2019-09-23 11:18:55,613 - database.upsert - ERROR - 325 - Encountered an error - retrys remaining: 2
 Traceback (most recent call last):
-  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/sqlalchemy/pool/base.py", line 680, in _finalize_fairy
-    fairy._reset(pool)
-  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/sqlalchemy/pool/base.py", line 867, in _reset
-    pool._dialect.do_rollback(self)
-  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/sqlalchemy/dialects/mysql/base.py", line 2253, in do_rollback
-    dbapi_connection.rollback()
-  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/pymysql/connections.py", line 430, in rollback
-    self._read_ok_packet()
-  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/pymysql/connections.py", line 394, in _read_ok_packet
-    pkt = self._read_packet()
-  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/pymysql/connections.py", line 657, in _read_packet
-    packet_header = self._read_bytes(4)
-  File "/home/wayned/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/pymysql/connections.py", line 699, in _read_bytes
-    "Lost connection to MySQL server during query (%s)" % (e,))
-pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during query ([Errno 110] Connection timed out)')
-2019-09-13 21:15:32,076 - root - ERROR - Failed to connect to MySQL
+  File "/home/ubuntu/facebook_to_db/database/upsert.py", line 211, in <module>
+    fields=account_fields
+  File "/home/ubuntu/facebook_to_db/database/database_functions.py", line 233, in get_request
+    fields=fields)
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/adobjects/adaccount.py", line 253, in api_get
+    return request.execute()
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 673, in execute
+    api_version=self._api_version,
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 336, in call
+    raise fb_response.error()
+facebook_business.exceptions.FacebookRequestError: 
+
+  Message: Call was not successful
+  Method:  GET
+  Path:    https://graph.facebook.com/v4.0/10911447/
+  Params:  {'level': 'account', 'fields': 'account_id,name,account_status,currency,amount_spent'}
+
+  Status:  400
+  Response:
+    {
+      "error": {
+        "message": "Unsupported get request. Object with ID '10911447' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
+        "type": "GraphMethodException",
+        "code": 100,
+        "error_subcode": 33,
+        "fbtrace_id": "AOXflowBJ6ln7Eo_YBeqBJl"
+      }
+    }
+
+2019-09-23 11:18:55,687 - database.upsert - ERROR - 325 - Encountered an error - retrys remaining: 1
 Traceback (most recent call last):
-  File "/home/wayned/acquire/scripts/database/acquiredatabase-git/database/upsert.py", line 65, in <module>
-    engine = mySQL_connect(credentials, port='3306', db='test_schema')
-NameError: name 'mySQL_connect' is not defined
+  File "/home/ubuntu/facebook_to_db/database/upsert.py", line 211, in <module>
+    fields=account_fields
+  File "/home/ubuntu/facebook_to_db/database/database_functions.py", line 233, in get_request
+    fields=fields)
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/adobjects/adaccount.py", line 253, in api_get
+    return request.execute()
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 673, in execute
+    api_version=self._api_version,
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 336, in call
+    raise fb_response.error()
+facebook_business.exceptions.FacebookRequestError: 
+
+  Message: Call was not successful
+  Method:  GET
+  Path:    https://graph.facebook.com/v4.0/10911447/
+  Params:  {'level': 'account', 'fields': 'account_id,name,account_status,currency,amount_spent'}
+
+  Status:  400
+  Response:
+    {
+      "error": {
+        "message": "Unsupported get request. Object with ID '10911447' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
+        "type": "GraphMethodException",
+        "code": 100,
+        "error_subcode": 33,
+        "fbtrace_id": "AIYcWPlr6URHjkN0peoOQeZ"
+      }
+    }
+
+2019-09-23 11:18:55,766 - database.upsert - ERROR - 325 - Encountered an error - retrys remaining: 0
+Traceback (most recent call last):
+  File "/home/ubuntu/facebook_to_db/database/upsert.py", line 211, in <module>
+    fields=account_fields
+  File "/home/ubuntu/facebook_to_db/database/database_functions.py", line 233, in get_request
+    fields=fields)
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/adobjects/adaccount.py", line 253, in api_get
+    return request.execute()
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 673, in execute
+    api_version=self._api_version,
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 336, in call
+    raise fb_response.error()
+facebook_business.exceptions.FacebookRequestError: 
+
+  Message: Call was not successful
+  Method:  GET
+  Path:    https://graph.facebook.com/v4.0/10911447/
+  Params:  {'level': 'account', 'fields': 'account_id,name,account_status,currency,amount_spent'}
+
+  Status:  400
+  Response:
+    {
+      "error": {
+        "message": "Unsupported get request. Object with ID '10911447' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
+        "type": "GraphMethodException",
+        "code": 100,
+        "error_subcode": 33,
+        "fbtrace_id": "AJw6vyRtw2ukU0BTsBxA-m5"
+      }
+    }
+
+2019-09-23 14:18:32,819 - database.upsert - ERROR - 325 - Encountered an error - retrys remaining: 2
+Traceback (most recent call last):
+  File "/home/ubuntu/facebook_to_db/database/upsert.py", line 211, in <module>
+    fields=account_fields
+  File "/home/ubuntu/facebook_to_db/database/database_functions.py", line 233, in get_request
+    fields=fields)
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/adobjects/adaccount.py", line 253, in api_get
+    return request.execute()
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 673, in execute
+    api_version=self._api_version,
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 336, in call
+    raise fb_response.error()
+facebook_business.exceptions.FacebookRequestError: 
+
+  Message: Call was not successful
+  Method:  GET
+  Path:    https://graph.facebook.com/v4.0/act_36670082/
+  Params:  {'level': 'account', 'fields': 'account_id,name,account_status,currency,amount_spent'}
+
+  Status:  500
+  Response:
+    {
+      "error": {
+        "message": "An unexpected error has occurred. Please retry your request later.",
+        "type": "OAuthException",
+        "is_transient": true,
+        "code": 2,
+        "fbtrace_id": "AUn0QLyZGxrWvhDXwZDhOeW"
+      }
+    }
+

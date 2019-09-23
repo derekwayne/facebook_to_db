@@ -65,8 +65,9 @@ def bulk_upsert(session, table, table_name,  df, id_cols):
     df: dataframe to be converted to a list of dictionaries
     id_col: a list of the primary keys in the table
     """
+    account_id = df.account_id[0] # store the account id for query
     primary_keys = ",".join(id_cols) # join PKs in string for query
-    query = "SELECT " + primary_keys + " FROM " + table_name
+    query = "SELECT " + primary_keys + " FROM " + table_name + " WHERE account_id = '" + str(account_id) + "';"
 
     if 'date_start' in df:
         df['date_start'] = pd.to_datetime(df['date_start'])
@@ -226,7 +227,7 @@ def get_request(account_id, table, params, fields):
     fields: list of fields for request
     --> returns requested data from Facebook Marketing API
     """
-    my_account = AdAccount(account_id) # KOHO AD ACCOUNT
+    my_account = AdAccount(account_id)
     if table == 'accounts':
         cursor = my_account.api_get(params=params,
                                     fields=fields)
@@ -381,16 +382,16 @@ def request_to_database(request, table, engine):
         adset_ids = [i for i, in adset_ids]
         df = df.loc[df['campaign_id'].isin(campaign_ids), :]
         df = df.loc[df['adset_id'].isin(adset_ids), :]
+
         # have experienced duplicates in primary keys in this table
         # I will log them into a csv to keep track which were dropped
-        duplicates = df[df.duplicated(subset=['ad_id', 'account_id', 'campaign_id', 'adset_id', 'date_start', 'region'],
-                                   keep='first')]
+        duplicates = df[df.duplicated(subset=['ad_id', 'account_id', 'campaign_id', 'adset_id', 'date_start', 'region'], keep='first')]
         n = len(duplicates.index)
         if n > 0:
-            logger.warning('{n} duplicate primary keys encountered: written to staging/duplicates.csv')
+            logger.warning(f'{n} duplicate primary keys encountered: written to staging/duplicates.csv')
             duplicates.to_csv('database/staging/duplciates.csv')
-            df.drop_duplicates(subset=['ad_id', 'account_id', 'campaign_id', 'adset_id', 'date_start', 'region'],
-                               keep = 'first', inplace = True)
+            df.drop_duplicates(subset=['ad_id', 'account_id', 'campaign_id', 'adset_id', 'date_start', 'region'], keep = 'first', inplace = True)
+
         df = transform(df)
         bulk_upsert(session, table=AdsInsightsRegionTable,
                     table_name='ads_insights_region',
