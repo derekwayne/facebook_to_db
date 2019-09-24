@@ -83,7 +83,8 @@ campaign_params = {'level': 'campaign',
                    'filtering': [{'field': 'campaign.effective_status',
                                  'operator': 'IN',
                                  'value': ['ACTIVE', 'PAUSED',
-                                           'ARCHIVED', 'DELETED']}]}
+                                           'ARCHIVED', 'DELETED',
+                                           'IN_PROCESS', 'WITH_ISSUES']}]}
 campaign_fields = [Campaign.Field.id,
                    Campaign.Field.name,
                    Campaign.Field.account_id,
@@ -96,7 +97,11 @@ adset_params = {'level': 'adset',
                 'filtering': [{'field': 'adset.effective_status',
                                'operator': 'IN',
                                'value': ['ACTIVE', 'PAUSED',
-                                         'ARCHIVED', 'DELETED']}]}
+                                         'ARCHIVED', 'DELETED',
+                                         'IN_PROCESS', 'WITH_ISSUES',
+                                         'PENDING_REVIEW', 'DISAPPROVED',
+                                         'PREAPPROVED', 'PENDING_BILLING_INFO',
+                                         'CAMPAIGN_PAUSED', 'ADSET_PAUSED']}]}
 adset_fields = [AdSet.Field.id,
           AdSet.Field.name,
           AdSet.Field.account_id,

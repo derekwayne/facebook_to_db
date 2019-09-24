@@ -347,12 +347,20 @@ def request_to_database(request, table, engine):
         # this also happens with deleted adsets
         adset_ids = session.query(AdSetsTable.adset_id)
         adset_ids = [i for i, in adset_ids]
-        df = df.loc[df['campaign_id'].isin(campaign_ids), :]
-        n = len(df.loc[df['adset_id'].isin(adset_ids)==False, :].index)
+
+        missing_campaign = df.loc[df['campaign_id'].isin(campaign_ids)==False, :]
+        n = len(missing_campaign.index)
         if n > 0:
-            logger.warning(f"{n} rows will not be synced - fk constraint")
-            df.to_csv("database/staging/ignored_ads.csv")
-        df = df.loc[df['adset_id'].isin(adset_ids), :]
+            logger.warning(f"{n} rows  will not be synced | deleted campaign")
+            missing_campaign.to_csv('database/staging/missing_campaigns.csv') # save to staging
+            df = df.loc[df['campaign_id'].isin(campaign_ids), :]
+        
+        missing_adset = df.loc[df['adset_id'].isin(adset_ids)==False, :]
+        n = len(missing_adset.index)
+        if n > 0:
+            logger.warning(f"{n} rows will not be synced | deleted adset")
+            missing_adset.to_csv("database/staging/missing_adset.csv") # save to staging
+            df = df.loc[df['adset_id'].isin(adset_ids), :]
         df = transform(df)
         bulk_upsert(session, table=AdsInsightsTable,
                     table_name='ads_insights',
