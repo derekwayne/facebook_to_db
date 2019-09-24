@@ -272,6 +272,8 @@ for account in clients: # account refers to an account name
                                     timedelta(days=1), "%Y-%m-%d")
             start = datetime.strftime(datetime.now() - \
                                       timedelta(days=30), "%Y-%m-%d")
+            # NOTE: will raise an IndexError if account has no data at defined start
+            # ==> include an exeption for these cases (e.g. new clients with no data)
             # store the list of dictionaries defining date params
             time_ranges = batch_dates(start, end, intv)
 
@@ -320,6 +322,9 @@ for account in clients: # account refers to an account name
             # has a greater frequency of errors. Most often - too many calls
             # from a single ad account.
             for i in range(intv):
+                # do not sync regions table for muse (too large)
+                if account == 'muse':
+                    break
                 tries = 1 # gives this table 1 retry after a half hour wait
                 while tries > 0:
                     try:

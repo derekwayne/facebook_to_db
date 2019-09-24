@@ -7453,3 +7453,61 @@ facebook_business.exceptions.FacebookRequestError:
 2019-09-24 14:24:00,452 - root - INFO - 347 - Ads-Region Table successfully synced to database
 2019-09-24 14:24:00,452 - database.upsert - INFO - 351 - Completed syncing hush to database
 2019-09-24 14:24:00,452 - root - INFO - 370 - The following accounts were synced:  nicosurge,lunata,rvezy,travelzoo,alinker_us,alinker_ca,inabuggy,clearbanc,revitasize,bel_kazan,cotton_carrier,tkees,koho,hol_food,all_seniors_care,flipd,giftgowns,williamraedesigns,tapplock3,tapplock2,michel_germain,hush
+2019-09-24 16:46:29,698 - database.upsert - INFO - 54 - Facebook authentication was a success
+2019-09-24 16:46:29,699 - database.upsert - INFO - 65 - MySQL connection was a success
+2019-09-24 16:46:29,699 - database.upsert - INFO - 224 - Beginning to sync dex_knows_best
+2019-09-24 16:46:31,689 - database.database_functions - INFO - 116 - 1 rows inserted in accounts
+2019-09-24 16:46:31,791 - root - INFO - 237 - Accounts Table successfully synced to database
+2019-09-24 16:46:32,787 - database.database_functions - INFO - 116 - 15 rows inserted in campaigns
+2019-09-24 16:46:32,905 - root - INFO - 250 - Campaigns Table successfully synced to database
+2019-09-24 16:46:33,887 - database.database_functions - INFO - 116 - 24 rows inserted in adsets
+2019-09-24 16:46:34,023 - root - INFO - 264 - Ad Sets Table successfully synced to database
+2019-09-24 16:47:34,109 - root - INFO - 283 - batching from date range: 2019-08-25 - 2019-08-29
+2019-09-24 16:52:43,793 - database.upsert - INFO - 54 - Facebook authentication was a success
+2019-09-24 16:52:43,794 - database.upsert - INFO - 65 - MySQL connection was a success
+2019-09-24 16:52:43,794 - database.upsert - INFO - 224 - Beginning to sync dex_knows_best
+2019-09-24 16:52:45,405 - database.database_functions - INFO - 107 - 1 rows updated in accounts
+2019-09-24 16:52:45,504 - root - INFO - 237 - Accounts Table successfully synced to database
+2019-09-24 16:52:47,620 - database.database_functions - INFO - 107 - 15 rows updated in campaigns
+2019-09-24 16:52:47,721 - root - INFO - 250 - Campaigns Table successfully synced to database
+2019-09-24 16:52:51,391 - database.database_functions - INFO - 107 - 24 rows updated in adsets
+2019-09-24 16:52:51,500 - root - INFO - 264 - Ad Sets Table successfully synced to database
+2019-09-24 16:53:51,581 - root - INFO - 283 - batching from date range: 2019-08-25 - 2019-08-29
+2019-09-24 16:56:47,817 - database.upsert - INFO - 54 - Facebook authentication was a success
+2019-09-24 16:56:47,817 - database.upsert - INFO - 65 - MySQL connection was a success
+2019-09-24 16:56:47,817 - database.upsert - INFO - 224 - Beginning to sync dex_knows_best
+2019-09-24 16:56:49,775 - database.database_functions - INFO - 107 - 1 rows updated in accounts
+2019-09-24 16:56:49,891 - root - INFO - 237 - Accounts Table successfully synced to database
+2019-09-24 16:56:52,712 - database.database_functions - INFO - 107 - 15 rows updated in campaigns
+2019-09-24 16:56:53,113 - root - INFO - 250 - Campaigns Table successfully synced to database
+2019-09-24 16:57:00,314 - database.database_functions - INFO - 107 - 24 rows updated in adsets
+2019-09-24 16:57:00,504 - root - INFO - 264 - Ad Sets Table successfully synced to database
+2019-09-24 16:58:00,586 - root - INFO - 283 - batching from date range: 2019-08-25 - 2019-08-29
+2019-09-24 16:58:06,293 - root - INFO - 293 - batch success; 1 out of 5
+2019-09-24 16:58:06,293 - root - INFO - 283 - batching from date range: 2019-08-30 - 2019-09-04
+2019-09-24 16:58:13,653 - root - INFO - 293 - batch success; 2 out of 5
+2019-09-24 16:58:13,654 - root - INFO - 283 - batching from date range: 2019-09-05 - 2019-09-10
+2019-09-24 16:58:26,764 - database.database_functions - INFO - 119 - 4 rows inserted in ads_insights
+2019-09-24 16:58:27,468 - root - INFO - 293 - batch success; 3 out of 5
+2019-09-24 16:58:27,469 - root - INFO - 283 - batching from date range: 2019-09-11 - 2019-09-16
+2019-09-24 16:58:32,650 - database.database_functions - INFO - 119 - 35 rows inserted in ads_insights
+2019-09-24 16:58:32,885 - root - INFO - 293 - batch success; 4 out of 5
+2019-09-24 16:58:32,886 - root - INFO - 283 - batching from date range: 2019-09-17 - 2019-09-23
+2019-09-24 16:58:42,064 - database.database_functions - INFO - 119 - 112 rows inserted in ads_insights
+2019-09-24 16:58:42,252 - root - INFO - 293 - batch success; 5 out of 5
+2019-09-24 16:58:42,253 - root - INFO - 294 - Ads Insights Table successfully synced to database
+2019-09-24 16:58:42,253 - root - INFO - 301 - batching from date range: 2019-08-25 - 2019-08-29
+2019-09-24 16:58:48,557 - root - INFO - 311 - batch success; 1 out of 5
+2019-09-24 16:59:48,629 - root - INFO - 301 - batching from date range: 2019-08-30 - 2019-09-04
+2019-09-24 16:59:55,310 - root - INFO - 311 - batch success; 2 out of 5
+2019-09-24 17:00:55,386 - root - INFO - 301 - batching from date range: 2019-09-05 - 2019-09-10
+2019-09-24 17:01:06,631 - database.database_functions - INFO - 119 - 59 rows inserted in ads_insights_age_and_gender
+2019-09-24 17:01:07,355 - root - INFO - 311 - batch success; 3 out of 5
+2019-09-24 17:02:07,429 - root - INFO - 301 - batching from date range: 2019-09-11 - 2019-09-16
+2019-09-24 17:02:19,974 - database.database_functions - INFO - 119 - 566 rows inserted in ads_insights_age_and_gender
+2019-09-24 17:02:20,412 - root - INFO - 311 - batch success; 4 out of 5
+2019-09-24 17:03:20,489 - root - INFO - 301 - batching from date range: 2019-09-17 - 2019-09-23
+2019-09-24 17:03:43,968 - database.database_functions - INFO - 119 - 1643 rows inserted in ads_insights_age_and_gender
+2019-09-24 17:03:44,108 - root - INFO - 311 - batch success; 5 out of 5
+2019-09-24 17:04:44,181 - root - INFO - 314 - Ads-Age and Gender Table successfully synced to database
+2019-09-24 17:14:44,921 - root - INFO - 330 - batching from date range: 2019-08-25 - 2019-08-29

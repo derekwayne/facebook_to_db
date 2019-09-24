@@ -65,7 +65,10 @@ def bulk_upsert(session, table, table_name,  df, id_cols):
     df: dataframe to be converted to a list of dictionaries
     id_col: a list of the primary keys in the table
     """
-    account_id = df.account_id[0] # store the account id for query
+    try:
+        account_id = df.account_id[0] # store the account id for query
+    except IndexError as e:
+        return # dataframe is empty --> occurs when no data for date batch
     primary_keys = ",".join(id_cols) # join PKs in string for query
     query = "SELECT " + primary_keys + " FROM " + table_name + " WHERE account_id = '" + str(account_id) + "';"
 
