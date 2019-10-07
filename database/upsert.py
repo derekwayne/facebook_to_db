@@ -267,11 +267,11 @@ for account in clients: # account refers to an account name
             # ADS INSIGHTS TABLE
             #=====================
             # define an interval for batching with smaller date ranges:
-            intv = 5
+            intv = 6
             end = datetime.strftime(datetime.now() - \
                                     timedelta(days=1), "%Y-%m-%d")
             start = datetime.strftime(datetime.now() - \
-                                      timedelta(days=30), "%Y-%m-%d")
+                                      timedelta(days=28), "%Y-%m-%d")
             # NOTE: will raise an IndexError if account has no data at defined start
             # ==> include an exeption for these cases (e.g. new clients with no data)
             # store the list of dictionaries defining date params
@@ -291,6 +291,7 @@ for account in clients: # account refers to an account name
                                     engine=engine
                                     )
                 logging.info(f"batch success; {i+1} out of {intv}")
+                sleeper(30)
             logging.info("Ads Insights Table successfully synced to database")
             #======================
             # AGE AND GENDER TABLE
@@ -323,9 +324,9 @@ for account in clients: # account refers to an account name
             # from a single ad account.
             for i in range(intv):
                 # do not sync regions table for muse (too large)
-                if account == 'muse':
+                if (account == 'muse') or (account == 'sheertex'):
                     break
-                tries = 1 # gives this table 1 retry after a half hour wait
+                tries = 2 # gives this table 1 retry after a half hour wait
                 while tries > 0:
                     try:
                         time_range = time_ranges[i]
@@ -342,7 +343,7 @@ for account in clients: # account refers to an account name
                                             )
                         logging.info(f"batch success; {i+1} out of {intv}")
                         # WAIT 3 MINUTE
-                        sleeper(180)
+                        sleeper(120)
                     except FacebookRequestError as e:
                         logger.exception('Encountered an error - waiting 30 minutes...')
                         tries -= 1

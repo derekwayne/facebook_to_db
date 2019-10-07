@@ -1,13 +1,15 @@
-2019-09-23 00:06:04,617 - database.upsert - ERROR - 314 - Encountered an error - waiting 30 minutes...
+2019-10-04 17:34:22,927 - database.upsert - ERROR - 362 - Encountered an error - retrys remaining: 2
 Traceback (most recent call last):
-  File "/home/ubuntu/facebook_to_db/database/upsert.py", line 308, in <module>
-    engine=engine
-  File "/home/ubuntu/facebook_to_db/database/database_functions.py", line 305, in request_to_database
-    columns = columns
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/pandas/core/frame.py", line 445, in __init__
-    data = list(data)
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 775, in __next__
-    if not self._queue and not self.load_next_page():
+  File "/home/ubuntu/facebook_to_db/database/upsert.py", line 306, in <module>
+    fields=agegender_fields
+  File "/home/ubuntu/facebook_to_db/database/database_functions.py", line 265, in get_request
+    request = cursor.get_result(params={"limit": 1000})
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/adobjects/helpers/adreportrunmixin.py", line 28, in get_result
+    return self.get_insights(fields=fields, params=params)
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/adobjects/adreportrun.py", line 214, in get_insights
+    return request.execute()
+  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 663, in execute
+    cursor.load_next_page()
   File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 830, in load_next_page
     params=self.params,
   File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 336, in call
@@ -16,132 +18,8 @@ facebook_business.exceptions.FacebookRequestError:
 
   Message: Call was not successful
   Method:  GET
-  Path:    https://graph.facebook.com/v4.0/2455304481366096/insights?access_token=EAAHGoaxg8r8BAFgZCtM95YQNjXPiRkW5us1klrd6mda1KzO7ZCc8tzcidHziZCiWTQ4jrZCHCLtOk0Hx5ZBNcqCAfEQvcZBykAso3c3NEjuUIHXCdkKDetPIvhZB516JkeynehxWhH3fFPKfNiwxFjnACcdSzJLmbgQLHebZCvNEzFyyxHLZAsadK&limit=1000&after=Njk5OQZDZD
+  Path:    https://graph.facebook.com/v4.0/707037786389629/insights
   Params:  {'limit': 1000}
-
-  Status:  400
-  Response:
-    {
-      "error": {
-        "message": "(#80000) There have been too many calls from this ad-account. Wait a bit and try again. For more info, please refer to https://developers.facebook.com/docs/graph-api/overview/rate-limiting.",
-        "type": "OAuthException",
-        "code": 80000,
-        "error_subcode": 2446079,
-        "fbtrace_id": "AHbk8voIYI4PH4vjKo_BpCA"
-      }
-    }
-
-2019-09-23 11:18:55,613 - database.upsert - ERROR - 325 - Encountered an error - retrys remaining: 2
-Traceback (most recent call last):
-  File "/home/ubuntu/facebook_to_db/database/upsert.py", line 211, in <module>
-    fields=account_fields
-  File "/home/ubuntu/facebook_to_db/database/database_functions.py", line 233, in get_request
-    fields=fields)
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/adobjects/adaccount.py", line 253, in api_get
-    return request.execute()
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 673, in execute
-    api_version=self._api_version,
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 336, in call
-    raise fb_response.error()
-facebook_business.exceptions.FacebookRequestError: 
-
-  Message: Call was not successful
-  Method:  GET
-  Path:    https://graph.facebook.com/v4.0/10911447/
-  Params:  {'level': 'account', 'fields': 'account_id,name,account_status,currency,amount_spent'}
-
-  Status:  400
-  Response:
-    {
-      "error": {
-        "message": "Unsupported get request. Object with ID '10911447' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
-        "type": "GraphMethodException",
-        "code": 100,
-        "error_subcode": 33,
-        "fbtrace_id": "AOXflowBJ6ln7Eo_YBeqBJl"
-      }
-    }
-
-2019-09-23 11:18:55,687 - database.upsert - ERROR - 325 - Encountered an error - retrys remaining: 1
-Traceback (most recent call last):
-  File "/home/ubuntu/facebook_to_db/database/upsert.py", line 211, in <module>
-    fields=account_fields
-  File "/home/ubuntu/facebook_to_db/database/database_functions.py", line 233, in get_request
-    fields=fields)
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/adobjects/adaccount.py", line 253, in api_get
-    return request.execute()
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 673, in execute
-    api_version=self._api_version,
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 336, in call
-    raise fb_response.error()
-facebook_business.exceptions.FacebookRequestError: 
-
-  Message: Call was not successful
-  Method:  GET
-  Path:    https://graph.facebook.com/v4.0/10911447/
-  Params:  {'level': 'account', 'fields': 'account_id,name,account_status,currency,amount_spent'}
-
-  Status:  400
-  Response:
-    {
-      "error": {
-        "message": "Unsupported get request. Object with ID '10911447' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
-        "type": "GraphMethodException",
-        "code": 100,
-        "error_subcode": 33,
-        "fbtrace_id": "AIYcWPlr6URHjkN0peoOQeZ"
-      }
-    }
-
-2019-09-23 11:18:55,766 - database.upsert - ERROR - 325 - Encountered an error - retrys remaining: 0
-Traceback (most recent call last):
-  File "/home/ubuntu/facebook_to_db/database/upsert.py", line 211, in <module>
-    fields=account_fields
-  File "/home/ubuntu/facebook_to_db/database/database_functions.py", line 233, in get_request
-    fields=fields)
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/adobjects/adaccount.py", line 253, in api_get
-    return request.execute()
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 673, in execute
-    api_version=self._api_version,
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 336, in call
-    raise fb_response.error()
-facebook_business.exceptions.FacebookRequestError: 
-
-  Message: Call was not successful
-  Method:  GET
-  Path:    https://graph.facebook.com/v4.0/10911447/
-  Params:  {'level': 'account', 'fields': 'account_id,name,account_status,currency,amount_spent'}
-
-  Status:  400
-  Response:
-    {
-      "error": {
-        "message": "Unsupported get request. Object with ID '10911447' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
-        "type": "GraphMethodException",
-        "code": 100,
-        "error_subcode": 33,
-        "fbtrace_id": "AJw6vyRtw2ukU0BTsBxA-m5"
-      }
-    }
-
-2019-09-23 14:18:32,819 - database.upsert - ERROR - 325 - Encountered an error - retrys remaining: 2
-Traceback (most recent call last):
-  File "/home/ubuntu/facebook_to_db/database/upsert.py", line 211, in <module>
-    fields=account_fields
-  File "/home/ubuntu/facebook_to_db/database/database_functions.py", line 233, in get_request
-    fields=fields)
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/adobjects/adaccount.py", line 253, in api_get
-    return request.execute()
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 673, in execute
-    api_version=self._api_version,
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 336, in call
-    raise fb_response.error()
-facebook_business.exceptions.FacebookRequestError: 
-
-  Message: Call was not successful
-  Method:  GET
-  Path:    https://graph.facebook.com/v4.0/act_36670082/
-  Params:  {'level': 'account', 'fields': 'account_id,name,account_status,currency,amount_spent'}
 
   Status:  500
   Response:
@@ -151,100 +29,7 @@ facebook_business.exceptions.FacebookRequestError:
         "type": "OAuthException",
         "is_transient": true,
         "code": 2,
-        "fbtrace_id": "AUn0QLyZGxrWvhDXwZDhOeW"
-      }
-    }
-
-2019-09-23 16:48:23,057 - database.upsert - ERROR - 351 - Encountered an error - retrys remaining: 2
-Traceback (most recent call last):
-  File "/home/ubuntu/facebook_to_db/database/upsert.py", line 226, in <module>
-    fields=account_fields
-  File "/home/ubuntu/facebook_to_db/database/database_functions.py", line 233, in get_request
-    fields=fields)
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/adobjects/adaccount.py", line 253, in api_get
-    return request.execute()
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 673, in execute
-    api_version=self._api_version,
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 336, in call
-    raise fb_response.error()
-facebook_business.exceptions.FacebookRequestError: 
-
-  Message: Call was not successful
-  Method:  GET
-  Path:    https://graph.facebook.com/v4.0/10911447/
-  Params:  {'level': 'account', 'fields': 'account_id,name,account_status,currency,amount_spent'}
-
-  Status:  400
-  Response:
-    {
-      "error": {
-        "message": "Unsupported get request. Object with ID '10911447' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
-        "type": "GraphMethodException",
-        "code": 100,
-        "error_subcode": 33,
-        "fbtrace_id": "ARpy9UxmlXgi-NWZZyqpSqF"
-      }
-    }
-
-2019-09-23 16:48:23,196 - database.upsert - ERROR - 351 - Encountered an error - retrys remaining: 1
-Traceback (most recent call last):
-  File "/home/ubuntu/facebook_to_db/database/upsert.py", line 226, in <module>
-    fields=account_fields
-  File "/home/ubuntu/facebook_to_db/database/database_functions.py", line 233, in get_request
-    fields=fields)
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/adobjects/adaccount.py", line 253, in api_get
-    return request.execute()
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 673, in execute
-    api_version=self._api_version,
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 336, in call
-    raise fb_response.error()
-facebook_business.exceptions.FacebookRequestError: 
-
-  Message: Call was not successful
-  Method:  GET
-  Path:    https://graph.facebook.com/v4.0/10911447/
-  Params:  {'level': 'account', 'fields': 'account_id,name,account_status,currency,amount_spent'}
-
-  Status:  400
-  Response:
-    {
-      "error": {
-        "message": "Unsupported get request. Object with ID '10911447' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
-        "type": "GraphMethodException",
-        "code": 100,
-        "error_subcode": 33,
-        "fbtrace_id": "ATRPmCcti7rxfVz3Q5aWhcd"
-      }
-    }
-
-2019-09-23 16:48:23,301 - database.upsert - ERROR - 351 - Encountered an error - retrys remaining: 0
-Traceback (most recent call last):
-  File "/home/ubuntu/facebook_to_db/database/upsert.py", line 226, in <module>
-    fields=account_fields
-  File "/home/ubuntu/facebook_to_db/database/database_functions.py", line 233, in get_request
-    fields=fields)
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/adobjects/adaccount.py", line 253, in api_get
-    return request.execute()
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 673, in execute
-    api_version=self._api_version,
-  File "/home/ubuntu/.virtualenvs/acquiredatabase/lib/python3.7/site-packages/facebook_business/api.py", line 336, in call
-    raise fb_response.error()
-facebook_business.exceptions.FacebookRequestError: 
-
-  Message: Call was not successful
-  Method:  GET
-  Path:    https://graph.facebook.com/v4.0/10911447/
-  Params:  {'level': 'account', 'fields': 'account_id,name,account_status,currency,amount_spent'}
-
-  Status:  400
-  Response:
-    {
-      "error": {
-        "message": "Unsupported get request. Object with ID '10911447' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api",
-        "type": "GraphMethodException",
-        "code": 100,
-        "error_subcode": 33,
-        "fbtrace_id": "APJwXve-8wR-8USHFlqayfJ"
+        "fbtrace_id": "AT6Loc6Uugaff1IXFDrEJoH"
       }
     }
 
