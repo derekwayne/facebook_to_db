@@ -97,7 +97,6 @@ def bulk_upsert(session, table, table_name,  df, id_cols):
         insert_df['date_start'] = insert_df['date_start'].astype(str)
 
     if not update_df.empty:
-        update_df.to_csv('database/staging/' + table_name + '_update.csv')
         num_updated = len(update_df.index)
         update_df = update_df.to_dict(orient="records")
         session.bulk_update_mappings(
@@ -106,7 +105,6 @@ def bulk_upsert(session, table, table_name,  df, id_cols):
         )
         logger.info(f'{num_updated} rows updated in {table_name}')
     if not insert_df.empty:
-        insert_df.to_csv('database/staging/' + table_name + '_insert.csv')
         num_inserted = len(insert_df.index)
         num_inserted
         insert_df = insert_df.to_dict(orient="records")
@@ -355,14 +353,12 @@ def request_to_database(request, table, engine):
         n = len(missing_campaign.index)
         if n > 0:
             logger.warning(f"{n} rows  will not be synced | deleted campaign")
-            missing_campaign.to_csv('database/staging/missing_campaigns.csv') # save to staging
             df = df.loc[df['campaign_id'].isin(campaign_ids), :]
-        
+
         missing_adset = df.loc[df['adset_id'].isin(adset_ids)==False, :]
         n = len(missing_adset.index)
         if n > 0:
             logger.warning(f"{n} rows will not be synced | deleted adset")
-            missing_adset.to_csv("database/staging/missing_adset.csv") # save to staging
             df = df.loc[df['adset_id'].isin(adset_ids), :]
         df = transform(df)
         bulk_upsert(session, table=AdsInsightsTable,
@@ -398,8 +394,6 @@ def request_to_database(request, table, engine):
         duplicates = df[df.duplicated(subset=['ad_id', 'account_id', 'campaign_id', 'adset_id', 'date_start', 'region'], keep='first')]
         n = len(duplicates.index)
         if n > 0:
-            logger.warning(f'{n} duplicate primary keys encountered: written to staging/duplicates.csv')
-            duplicates.to_csv('database/staging/duplciates.csv')
             df.drop_duplicates(subset=['ad_id', 'account_id', 'campaign_id', 'adset_id', 'date_start', 'region'], keep = 'first', inplace = True)
 
         df = transform(df)

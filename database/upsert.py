@@ -33,7 +33,6 @@ from database.models import (
     mySQL_connect,
 )
 from sqlalchemy.orm import sessionmaker
-
 #++++++++++++++++++++
 # LOGGER
 #++++++++++++++++++++
@@ -207,13 +206,13 @@ def sleeper(seconds):
         sys.stdout.flush()
         time.sleep(1)
 
-# Open client dictionary json file
-with open('database/settings/client_dictionary.json', 'r') as f:
-    clients = json.load(f)
-
 # store a list of accounts that were synced and not synced properly
 synced = []
 not_synced = []
+
+clients = [arg for arg in sys.argv]
+clients = clients[1:]
+
 #================================/////////////
 #  BEGIN ITERATING OVER ACCOUNTS
 #===============================/////////////
@@ -225,7 +224,7 @@ for account in clients: # account refers to an account name
             #==================
             # ACCOUNTS TABLE
             #==================
-            account_request = get_request(account_id=clients[account],
+            account_request = get_request(account_id=account,
                                           table='accounts',
                                           params=account_params,
                                           fields=account_fields
@@ -238,7 +237,7 @@ for account in clients: # account refers to an account name
             #===================
             # CAMPAIGNS TABLE
             #===================
-            campaign_request = get_request(account_id=clients[account],
+            campaign_request = get_request(account_id=account,
                                            table='campaigns',
                                            params=campaign_params,
                                            fields=campaign_fields
@@ -251,7 +250,7 @@ for account in clients: # account refers to an account name
             #================
             # AD SETS TABLE
             #================
-            adsets_request = get_request(account_id=clients[account],
+            adsets_request = get_request(account_id=account,
                                          table='adsets',
                                          params=adset_params,
                                          fields=adset_fields
@@ -267,13 +266,11 @@ for account in clients: # account refers to an account name
             # ADS INSIGHTS TABLE
             #=====================
             # define an interval for batching with smaller date ranges:
-            intv = 6
+            intv = 12
             end = datetime.strftime(datetime.now() - \
                                     timedelta(days=1), "%Y-%m-%d")
             start = datetime.strftime(datetime.now() - \
-                                      timedelta(days=28), "%Y-%m-%d")
-            # NOTE: will raise an IndexError if account has no data at defined start
-            # ==> include an exeption for these cases (e.g. new clients with no data)
+                                      timedelta(days=60), "%Y-%m-%d")
             # store the list of dictionaries defining date params
             time_ranges = batch_dates(start, end, intv)
 
@@ -281,7 +278,7 @@ for account in clients: # account refers to an account name
                 time_range = time_ranges[i]
                 ads_params['time_range'] = time_range
                 logging.info(f"batching from date range: {time_range['since']} - {time_range['until']}")
-                ads_request = get_request(account_id=clients[account],
+                ads_request = get_request(account_id=account,
                                           table='ads_insights',
                                           params=ads_params,
                                           fields=ads_fields
@@ -300,7 +297,7 @@ for account in clients: # account refers to an account name
                 time_range = time_ranges[i]
                 agegender_params['time_range'] = time_range
                 logging.info(f"batching from date range: {time_range['since']} - {time_range['until']}")
-                agegender_request = get_request(account_id=clients[account],
+                agegender_request = get_request(account_id=account,
                                                 table='ads_insights_age_and_gender',
                                                 params=agegender_params,
                                                 fields=agegender_fields
@@ -332,7 +329,7 @@ for account in clients: # account refers to an account name
                         time_range = time_ranges[i]
                         region_params['time_range'] = time_range
                         logging.info(f"batching from date range: {time_range['since']} - {time_range['until']}")
-                        region_request = get_request(account_id=clients[account],
+                        region_request = get_request(account_id=account,
                                                  table='ads_insights_region',
                                                  params=region_params,
                                                  fields=region_fields
@@ -354,7 +351,7 @@ for account in clients: # account refers to an account name
             #===================
             # END OF REQUESTS 
             #===================
-            logger.info(f'Completed syncing {account} to database')
+            logger.info(f'CODE_200: Completed syncing {account} to database!')
             synced.append(account)
         # Catching request errors from any other table and retrying the entire account
         # 2 more times...
