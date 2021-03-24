@@ -51,7 +51,7 @@ PyYAML==5.1.2
 pyzmq==18.1.0
 qtconsole==4.5.5
 requests==2.22.0
-rsa==3.4.2
+rsa==4.1
 s3transfer==0.2.1
 Send2Trash==1.5.0
 shiboken2==5.13.1
